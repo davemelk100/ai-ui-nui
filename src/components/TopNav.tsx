@@ -14,7 +14,11 @@ const TopNav: React.FC = () => {
       description: "Traditional chat interface",
     },
     { path: "/modern", label: "Modern UI", description: "Contemporary design" },
-    { path: "/minimal", label: "Minimal", description: "Clean and simple" },
+    {
+      path: "/minimal",
+      label: "Collaborative",
+      description: "Team workspace & project management",
+    },
     {
       path: "/dark",
       label: "Voice Chat",
