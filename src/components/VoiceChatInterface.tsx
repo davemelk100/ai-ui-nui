@@ -7,10 +7,7 @@ import {
   Play,
   Pause,
   BarChart3,
-  MessageCircle,
   Settings,
-  Plus,
-  Zap,
   Headphones,
   Radio,
 } from "lucide-react";
@@ -40,7 +37,6 @@ const VoiceChatInterface: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [currentVolume, setCurrentVolume] = useState(75);
   const [isMuted, setIsMuted] = useState(false);
-  const [audioLevel, setAudioLevel] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -56,17 +52,7 @@ const VoiceChatInterface: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Simulate audio level changes
-  useEffect(() => {
-    if (isRecording) {
-      const interval = setInterval(() => {
-        setAudioLevel(Math.random() * 100);
-      }, 100);
-      return () => clearInterval(interval);
-    } else {
-      setAudioLevel(0);
-    }
-  }, [isRecording]);
+
 
   const startRecording = () => {
     setIsRecording(true);

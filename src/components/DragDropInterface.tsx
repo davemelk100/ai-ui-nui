@@ -1,28 +1,18 @@
 import React, { useState } from "react";
 import {
   MessageSquare,
-  Users,
   FileText,
   Image,
-  Video,
-  Music,
-  Folder,
   Upload,
   Trash2,
-  CheckCircle,
-  AlertCircle,
-  Move,
   Bot,
   User,
   Copy,
   ThumbsUp,
   ThumbsDown,
-  MoreHorizontal,
-  Sparkles,
   Settings,
   Plus,
   Search,
-  Zap,
   TrendingUp,
   Lightbulb,
 } from "lucide-react";
@@ -182,21 +172,6 @@ const DraggableContentItem: React.FC<{ component: DraggableComponent }> = ({
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-100 text-green-800";
-      case "in-progress":
-        return "bg-blue-100 text-blue-800";
-      case "review":
-        return "bg-yellow-100 text-yellow-800";
-      case "draft":
-        return "bg-gray-100 text-gray-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   return (
     <div className="p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors cursor-move">
       <div className="flex items-start space-x-3">
@@ -210,20 +185,10 @@ const DraggableContentItem: React.FC<{ component: DraggableComponent }> = ({
           <p className="text-xs text-gray-500 mt-1 line-clamp-2">
             {data.description}
           </p>
-          <div className="flex items-center justify-between mt-2">
-            <span
-              className={cn(
-                "text-xs px-2 py-1 rounded-full",
-                getStatusColor(data.status)
-              )}
-            >
-              {data.status}
-            </span>
-            <div className="flex items-center space-x-2 text-xs text-gray-400">
-              <span>👤 {data.creator}</span>
-              <span>❤️ {data.likes}</span>
-              <span>💬 {data.comments}</span>
-            </div>
+          <div className="flex items-center space-x-2 text-xs text-gray-400 mt-2">
+            <span>👤 {data.creator}</span>
+            <span>❤️ {data.likes}</span>
+            <span>💬 {data.comments}</span>
           </div>
         </div>
       </div>
@@ -359,19 +324,6 @@ const DragDropInterface: React.FC = () => {
     null
   );
   const [dragOverZone, setDragOverZone] = useState<string | null>(null);
-
-  const getStatusIcon = (status: DraggableComponent["status"]) => {
-    switch (status) {
-      case "pending":
-        return <AlertCircle className="w-4 h-4 text-yellow-500" />;
-      case "processing":
-        return <Move className="w-4 h-4 text-blue-500 animate-pulse" />;
-      case "completed":
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case "error":
-        return <AlertCircle className="w-4 h-4 text-red-500" />;
-    }
-  };
 
   const handleDragStart = (e: React.DragEvent, item: DraggableComponent) => {
     setDraggedItem(item);

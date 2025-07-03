@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Sparkles, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "../lib/utils";
 
 const TopNav: React.FC = () => {
@@ -10,21 +10,15 @@ const TopNav: React.FC = () => {
   const navItems = [
     {
       path: "/",
-      label: "Classic Chat",
-      description:
-        "Traditional chat interface with sidebar navigation and message history. Features a clean, familiar design with typing indicators and message actions like copy and feedback.",
-    },
-    {
-      path: "/modern",
       label: "Modern UI",
       description:
         "Contemporary design with enhanced visual styling and modern aesthetics. Includes gradient backgrounds, improved spacing, and a more sophisticated user experience with advanced animations.",
     },
     {
       path: "/minimal",
-      label: "Collaborative",
+      label: "AI Tuning",
       description:
-        "Team workspace environment for collaborative AI development and project management. Features team member profiles, content organization, and real-time collaboration tools for AI-human teamwork.",
+        "Workspace for tuning and collaborating with AI models. Features team member profiles, content organization, and real-time AI-human teamwork tools.",
     },
     {
       path: "/dark",
