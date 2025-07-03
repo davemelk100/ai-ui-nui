@@ -7,6 +7,7 @@ import ModernChatInterface from "./components/ModernChatInterface";
 import VoiceChatInterface from "./components/VoiceChatInterface";
 import CollaborativeWorkspace from "./components/CollaborativeWorkspace";
 import DragDropInterface from "./components/DragDropInterface";
+import AvatarPersonalityInterface from "./components/AvatarPersonalityInterface";
 import "./App.css";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/minimal" element={<CollaborativeWorkspace />} />
           <Route path="/dark" element={<VoiceChatInterface />} />
           <Route path="/dragdrop" element={<DragDropInterface />} />
+          <Route path="/avatars" element={<AvatarPersonalityInterface />} />
         </Routes>
       </div>
     </Router>

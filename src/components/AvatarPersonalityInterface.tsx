@@ -59,6 +59,9 @@ const AvatarPersonalityInterface: React.FC = () => {
     traits: [] as string[],
     category: "creative" as Personality["category"],
   });
+  const [showConversation, setShowConversation] = useState(false);
+  const [conversationMessages, setConversationMessages] = useState<any[]>([]);
+  const [inputMessage, setInputMessage] = useState("");
 
   const personalities: Personality[] = [
     {
@@ -293,6 +296,102 @@ const AvatarPersonalityInterface: React.FC = () => {
         return <Lightbulb className="w-4 h-4" />;
       case "artistic":
         return <Camera className="w-4 h-4" />;
+    }
+  };
+
+  const startConversation = () => {
+    if (!selectedAI || !userAvatar) return;
+
+    const welcomeMessage = {
+      id: Date.now().toString(),
+      content: `Hello ${userAvatar.name}! I'm ${
+        selectedAI.name
+      }, your ${selectedAI.personality.name.toLowerCase()}. I'm excited to chat with you! What would you like to discuss today?`,
+      sender: selectedAI,
+      timestamp: new Date(),
+      isAI: true,
+    };
+
+    setConversationMessages([welcomeMessage]);
+    setShowConversation(true);
+  };
+
+  const sendMessage = () => {
+    if (!inputMessage.trim() || !selectedAI || !userAvatar) return;
+
+    const userMessage = {
+      id: Date.now().toString(),
+      content: inputMessage,
+      sender: userAvatar,
+      timestamp: new Date(),
+      isAI: false,
+    };
+
+    setConversationMessages((prev) => [...prev, userMessage]);
+    setInputMessage("");
+
+    // Simulate AI response based on personality
+    setTimeout(() => {
+      const aiResponse = generateAIResponse(
+        inputMessage,
+        selectedAI,
+        userAvatar
+      );
+      setConversationMessages((prev) => [...prev, aiResponse]);
+    }, 1000);
+  };
+
+  const generateAIResponse = (
+    userMessage: string,
+    ai: Avatar,
+    user: Avatar
+  ) => {
+    const responses = {
+      creative: [
+        "That's a fascinating idea! Let me help you explore that creative direction...",
+        "I love your creative thinking! Here's how we could develop this concept...",
+        "Your imagination is inspiring! Let's brainstorm some creative solutions...",
+      ],
+      technical: [
+        "From a technical perspective, here's how we could approach this...",
+        "Let me break this down logically and provide a systematic solution...",
+        "Technically speaking, here are the key considerations...",
+      ],
+      social: [
+        "I understand how you feel about that. Let's talk through it together...",
+        "That's a great point! I'd love to hear more about your perspective...",
+        "I'm here to support you. What are your thoughts on this?",
+      ],
+      analytical: [
+        "Let me analyze this situation and provide some insights...",
+        "Based on the data and patterns, here's what I observe...",
+        "Let's examine this from different analytical angles...",
+      ],
+      artistic: [
+        "That's beautifully expressed! Let me share some artistic insights...",
+        "I appreciate your artistic sensibility. Here's a creative perspective...",
+        "Your artistic vision is wonderful! Let's explore this creatively...",
+      ],
+    };
+
+    const personalityType = ai.personality.category;
+    const possibleResponses = responses[personalityType] || responses.creative;
+    const randomResponse =
+      possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
+
+    return {
+      id: (Date.now() + 1).toString(),
+      content: randomResponse,
+      sender: ai,
+      timestamp: new Date(),
+      isAI: true,
+    };
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
     }
   };
 
@@ -548,9 +647,12 @@ const AvatarPersonalityInterface: React.FC = () => {
         </div>
 
         {/* Start Conversation Button */}
-        {selectedAI && userAvatar && (
+        {selectedAI && userAvatar && !showConversation && (
           <div className="mt-8 text-center">
-            <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 mx-auto">
+            <button
+              onClick={startConversation}
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 mx-auto"
+            >
               <MessageCircle className="w-5 h-5" />
               Start Conversation with {selectedAI.name}
             </button>
@@ -558,6 +660,92 @@ const AvatarPersonalityInterface: React.FC = () => {
               {userAvatar.name} ({userAvatar.personality.name}) will chat with{" "}
               {selectedAI.name} ({selectedAI.personality.name})
             </p>
+          </div>
+        )}
+
+        {/* Conversation Interface */}
+        {showConversation && selectedAI && userAvatar && (
+          <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="text-2xl">{userAvatar.image}</div>
+                  <div className="text-2xl">{selectedAI.image}</div>
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    {userAvatar.name} & {selectedAI.name}
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    {userAvatar.personality.name} ×{" "}
+                    {selectedAI.personality.name}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowConversation(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+
+            {/* Messages */}
+            <div className="h-96 overflow-y-auto mb-4 space-y-4 p-4 bg-gray-50 rounded-xl">
+              {conversationMessages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex gap-3 ${
+                    message.isAI ? "justify-start" : "justify-end"
+                  }`}
+                >
+                  {message.isAI && (
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                      {selectedAI.image}
+                    </div>
+                  )}
+                  <div
+                    className={`max-w-xs px-4 py-2 rounded-2xl ${
+                      message.isAI
+                        ? "bg-white border border-gray-200 text-gray-900"
+                        : "bg-blue-500 text-white"
+                    }`}
+                  >
+                    <p className="text-sm">{message.content}</p>
+                    <p className="text-xs opacity-70 mt-1">
+                      {message.timestamp.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+                  {!message.isAI && (
+                    <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                      {userAvatar.image}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Input */}
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Type your message..."
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                onClick={sendMessage}
+                disabled={!inputMessage.trim()}
+                className="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              >
+                Send
+              </button>
+            </div>
           </div>
         )}
       </div>

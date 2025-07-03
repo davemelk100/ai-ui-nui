@@ -1,12 +1,12 @@
 # Melks Chat Interface
 
-A modern, beautiful React application that replicates the interface of popular AI chat platforms like ChatGPT, Grok, Perplexity, and Claude. Built with TypeScript, Tailwind CSS, and Lucide React icons. Features multiple UI variations to showcase different design approaches.
+A modern, beautiful React application that offers a fresh take on familiar AI chat interface concepts from platforms like ChatGPT, Grok, Perplexity, and Claude. Built with TypeScript, Tailwind CSS, and Lucide React icons. Features multiple UI variations to showcase different design approaches and innovative features.
 
 ## Features
 
 ### 🎨 Modern UI/UX
 
-- Clean, minimalist design inspired by popular AI chat interfaces
+- Clean, minimalist design that builds upon familiar AI chat interface patterns
 - Responsive layout with sidebar navigation
 - Smooth animations and transitions
 - Custom scrollbar styling
@@ -149,6 +149,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-- Design inspired by ChatGPT, Grok, Perplexity, and Claude interfaces
+- Design concepts inspired by familiar patterns from ChatGPT, Grok, Perplexity, and Claude interfaces
 - Icons from [Lucide React](https://lucide.dev/)
 - Styling with [Tailwind CSS](https://tailwindcss.com/)

@@ -11,23 +11,38 @@ const TopNav: React.FC = () => {
     {
       path: "/",
       label: "Classic Chat",
-      description: "Traditional chat interface",
+      description:
+        "Traditional chat interface with sidebar navigation and message history. Features a clean, familiar design with typing indicators and message actions like copy and feedback.",
     },
-    { path: "/modern", label: "Modern UI", description: "Contemporary design" },
+    {
+      path: "/modern",
+      label: "Modern UI",
+      description:
+        "Contemporary design with enhanced visual styling and modern aesthetics. Includes gradient backgrounds, improved spacing, and a more sophisticated user experience with advanced animations.",
+    },
     {
       path: "/minimal",
       label: "Collaborative",
-      description: "Team workspace & project management",
+      description:
+        "Team workspace environment for collaborative AI development and project management. Features team member profiles, content organization, and real-time collaboration tools for AI-human teamwork.",
     },
     {
       path: "/dark",
       label: "Voice Chat",
-      description: "Voice-based AI conversation",
+      description:
+        "Voice-based AI conversation interface with audio visualizations and speech patterns. Includes voice recording controls, audio level indicators, and simulated voice message playback with personality-driven responses.",
     },
     {
       path: "/dragdrop",
       label: "Drag & Drop",
-      description: "Interactive file organization",
+      description:
+        "Interactive component library for organizing and testing UI elements through drag and drop functionality. Allows users to move real components between different zones like testing, active, and archive areas.",
+    },
+    {
+      path: "/avatars",
+      label: "Avatars",
+      description:
+        "Select AI companions and customize your own avatar with unique personalities and traits. Start personalized conversations where both user and AI have distinct personalities that influence the interaction style and responses.",
     },
   ];
 
