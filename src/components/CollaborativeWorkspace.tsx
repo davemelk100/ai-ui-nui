@@ -4,23 +4,11 @@ import {
   UserPlus,
   MessageSquare,
   Settings,
-  Plus,
-  CheckCircle,
-  Circle,
-  Clock,
-  Star,
-  FolderOpen,
-  FileText,
-  Calendar,
-  Target,
   TrendingUp,
   Lightbulb,
   Zap,
   Bot,
-  User,
   Search,
-  Filter,
-  MoreHorizontal,
 } from "lucide-react";
 
 interface TeamMember {
@@ -64,10 +52,6 @@ interface Project {
 
 const CollaborativeWorkspace: React.FC = () => {
   const [activeProject, setActiveProject] = useState<string>("project-1");
-  const [selectedTask, setSelectedTask] = useState<string | null>(null);
-  const [isAddingTask, setIsAddingTask] = useState(false);
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [filterStatus, setFilterStatus] = useState<string>("all");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const teamMembers: TeamMember[] = [
@@ -190,75 +174,8 @@ const CollaborativeWorkspace: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "todo":
-        return "bg-gray-100 text-gray-700";
-      case "in-progress":
-        return "bg-blue-100 text-blue-700";
-      case "review":
-        return "bg-yellow-100 text-yellow-700";
-      case "done":
-        return "bg-green-100 text-green-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "low":
-        return "bg-gray-100 text-gray-600";
-      case "medium":
-        return "bg-yellow-100 text-yellow-600";
-      case "high":
-        return "bg-red-100 text-red-600";
-      default:
-        return "bg-gray-100 text-gray-600";
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "todo":
-        return <Circle className="w-4 h-4" />;
-      case "in-progress":
-        return <Clock className="w-4 h-4" />;
-      case "review":
-        return <Star className="w-4 h-4" />;
-      case "done":
-        return <CheckCircle className="w-4 h-4" />;
-      default:
-        return <Circle className="w-4 h-4" />;
-    }
-  };
-
-  const addContentItem = () => {
-    if (newTaskTitle.trim()) {
-      const newContentItem: ContentItem = {
-        id: `content-${Date.now()}`,
-        type: "documentation",
-        title: newTaskTitle,
-        description: "New collaborative content item",
-        status: "draft",
-        creator: "Melks",
-        lastModified: new Date(),
-        likes: 0,
-        comments: 0,
-        tags: ["collaboration"],
-      };
-
-      if (currentProject) {
-        currentProject.contentItems.push(newContentItem);
-      }
-
-      setNewTaskTitle("");
-      setIsAddingTask(false);
-    }
-  };
-
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="flex h-[calc(100vh-64px)] bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Team Sidebar */}
       <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-6 border-b border-gray-200">
@@ -338,7 +255,9 @@ const CollaborativeWorkspace: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center space-x-3">
-                    <FolderOpen className="w-5 h-5 text-blue-500" />
+                    <div className="w-5 h-5 bg-blue-500 rounded flex items-center justify-center">
+                      <div className="w-3 h-3 bg-white rounded-sm"></div>
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">
                         {project.name}
@@ -397,140 +316,198 @@ const CollaborativeWorkspace: React.FC = () => {
           </div>
         </div>
 
-        {/* Task Board */}
+        {/* AI Configuration Dashboard */}
         <div className="flex-1 overflow-y-auto p-8">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-gray-900">Task Board</h3>
-            <div className="flex items-center space-x-4">
-              <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">All Tasks</option>
-                <option value="todo">To Do</option>
-                <option value="in-progress">In Progress</option>
-                <option value="review">Review</option>
-                <option value="done">Done</option>
-              </select>
-              <button
-                onClick={() => setIsAddingTask(true)}
-                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add Task</span>
+            <h3 className="text-lg font-semibold text-gray-900">
+              AI Configuration Dashboard
+            </h3>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-gray-600">System Active</span>
+            </div>
+          </div>
+
+          {/* AI Configuration Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Model Configuration */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">
+                    Model Configuration
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    GPT-4 Turbo • 128K Context
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Temperature</span>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-20 bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-500 h-2 rounded-full"
+                        style={{ width: "70%" }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-medium">0.7</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Max Tokens</span>
+                  <span className="text-sm font-medium">4,096</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Top P</span>
+                  <span className="text-sm font-medium">0.9</span>
+                </div>
+              </div>
+
+              <button className="w-full mt-4 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium">
+                Configure Model
+              </button>
+            </div>
+
+            {/* Prompt Engineering */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-600 rounded-lg flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">
+                    Prompt Engineering
+                  </h4>
+                  <p className="text-sm text-gray-600">3 Active Templates</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium">Code Assistant</span>
+                    <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
+                      Active
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    Specialized for programming tasks
+                  </p>
+                </div>
+
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium">Creative Writer</span>
+                    <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
+                      Active
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    Optimized for creative content
+                  </p>
+                </div>
+              </div>
+
+              <button className="w-full mt-4 px-4 py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium">
+                Manage Templates
+              </button>
+            </div>
+
+            {/* Fine-tuning */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">Fine-tuning</h4>
+                  <p className="text-sm text-gray-600">Custom Model Training</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Training Status</span>
+                  <span className="text-sm font-medium text-green-600">
+                    Completed
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Dataset Size</span>
+                  <span className="text-sm font-medium">2.4K examples</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Accuracy</span>
+                  <span className="text-sm font-medium">94.2%</span>
+                </div>
+
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-purple-500 h-2 rounded-full"
+                    style={{ width: "94%" }}
+                  ></div>
+                </div>
+              </div>
+
+              <button className="w-full mt-4 px-4 py-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors text-sm font-medium">
+                Start Training
+              </button>
+            </div>
+
+            {/* Performance Analytics */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">
+                    Performance Analytics
+                  </h4>
+                  <p className="text-sm text-gray-600">Real-time Metrics</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Response Time</span>
+                  <span className="text-sm font-medium">1.2s avg</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Success Rate</span>
+                  <span className="text-sm font-medium">98.7%</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Token Usage</span>
+                  <span className="text-sm font-medium">2.1M/month</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Cost</span>
+                  <span className="text-sm font-medium">$127.50</span>
+                </div>
+              </div>
+
+              <button className="w-full mt-4 px-4 py-2 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 transition-colors text-sm font-medium">
+                View Analytics
               </button>
             </div>
           </div>
 
-          {/* Add Task Modal */}
-          {isAddingTask && (
-            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-              <div className="flex items-center space-x-3">
-                <input
-                  type="text"
-                  value={newTaskTitle}
-                  onChange={(e) => setNewTaskTitle(e.target.value)}
-                  placeholder="Enter task title..."
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onKeyPress={(e) => e.key === "Enter" && addContentItem()}
-                />
-                <button
-                  onClick={addContentItem}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                >
-                  Add
-                </button>
-                <button
-                  onClick={() => setIsAddingTask(false)}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Content Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {currentProject?.contentItems
-              .filter(
-                (item) => filterStatus === "all" || item.status === filterStatus
-              )
-              .map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() =>
-                    setSelectedTask(selectedTask === item.id ? null : item.id)
-                  }
-                  className={`bg-white border border-gray-200 rounded-xl p-4 cursor-pointer transition-all duration-200 hover:shadow-lg ${
-                    selectedTask === item.id ? "ring-2 ring-blue-500" : ""
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center space-x-2">
-                      {getStatusIcon(item.status)}
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full ${getStatusColor(
-                          item.status
-                        )}`}
-                      >
-                        {item.status.replace("-", " ")}
-                      </span>
-                    </div>
-                    <button className="p-1 rounded hover:bg-gray-100">
-                      <MoreHorizontal className="w-4 h-4 text-gray-500" />
-                    </button>
-                  </div>
-
-                  <h4 className="font-medium text-gray-900 mb-2">
-                    {item.title}
-                  </h4>
-                  <p className="text-sm text-gray-600 mb-3">
-                    {item.description}
-                  </p>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">Creator</span>
-                      <span className="text-xs font-medium text-gray-700">
-                        {item.creator}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">Type</span>
-                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-600">
-                        {item.type}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">Modified</span>
-                      <span className="text-xs text-gray-700">
-                        {item.lastModified.toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap gap-1">
-                    {item.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-
-        {/* Collaborative Chat */}
-        <div className="bg-white border-t border-gray-200 p-6">
-          <div className="max-w-4xl mx-auto">
+          {/* Team Chat */}
+          <div className="mt-8">
             <div className="flex items-center space-x-4 mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Team Chat</h3>
               <div className="flex items-center space-x-2">
@@ -541,7 +518,7 @@ const CollaborativeWorkspace: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-xl p-4">
+            <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                   <Bot className="w-4 h-4 text-white" />

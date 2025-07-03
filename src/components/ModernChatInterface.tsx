@@ -86,7 +86,7 @@ const ModernChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="flex h-[calc(100vh-64px)] bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Modern Sidebar */}
       <div className="w-80 bg-white/80 backdrop-blur-sm border-r border-gray-200/50 flex flex-col">
         <div className="p-6 border-b border-gray-200/50">

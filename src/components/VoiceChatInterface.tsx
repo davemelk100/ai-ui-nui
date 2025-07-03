@@ -132,17 +132,17 @@ const VoiceChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+    <div className="flex h-[calc(100vh-64px)] bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-900">
       {/* Voice Control Sidebar */}
       <div className="w-80 bg-black/20 backdrop-blur-xl border-r border-white/10 flex flex-col">
         <div className="p-6 border-b border-white/10">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-2xl flex items-center justify-center shadow-lg">
               <Radio className="w-7 h-7 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">Voice Chat</h1>
-              <p className="text-sm text-purple-200">AI Voice Assistant</p>
+              <p className="text-sm text-blue-200">AI Voice Assistant</p>
             </div>
           </div>
         </div>
