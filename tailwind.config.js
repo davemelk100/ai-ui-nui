@@ -5,13 +5,12 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: [
-          "Work Sans",
+          "Roboto",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
-          "Roboto",
           "Helvetica Neue",
           "Arial",
           "Noto Sans",

@@ -9,7 +9,7 @@
 
   body {
     @apply bg-gray-50 text-gray-900;
-    font-family: 'Work Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     margin: 0;
     padding: 0;

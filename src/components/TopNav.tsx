@@ -37,19 +37,8 @@ const TopNav: React.FC = () => {
     <nav className="bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
-          {/* Logo and Brand */}
-          <div className="flex items-center space-x-3 flex-1">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold text-gray-900">Melks</h1>
-              <p className="text-xs text-gray-500">AI Chat Interface</p>
-            </div>
-          </div>
-
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1 ml-auto">
+          <div className="hidden md:flex items-center space-x-1 mx-auto">
             {navItems.map((item) => (
               <Link
                 key={item.path}
