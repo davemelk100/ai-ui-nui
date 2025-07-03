@@ -409,240 +409,313 @@ const AvatarPersonalityInterface: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* AI Selection Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <Bot className="w-6 h-6 text-blue-600" />
-                Choose Your AI Companion
+        {/* Main Content and Personality Library Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Personality Library - Left Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Palette className="w-5 h-5 text-purple-500" />
+                Personality Library
               </h2>
-              <Sparkles className="w-5 h-5 text-blue-500" />
-            </div>
+              <p className="text-sm text-gray-600 mb-4">
+                Browse and customize personality types
+              </p>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {aiAvatars.map((avatar) => (
-                <div
-                  key={avatar.id}
-                  onClick={() => handleAISelection(avatar)}
-                  className={cn(
-                    "relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:scale-105",
-                    selectedAI?.id === avatar.id
-                      ? "border-blue-500 bg-blue-50 shadow-lg"
-                      : "border-gray-200 hover:border-gray-300"
-                  )}
-                >
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">{avatar.image}</div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
-                      {avatar.name}
-                    </h3>
-                    <div className="flex items-center justify-center gap-1 mb-2">
+              <div className="space-y-3">
+                {personalities.map((personality) => (
+                  <div
+                    key={personality.id}
+                    className="p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer hover:shadow-sm hover:bg-gray-50"
+                    onClick={() => handlePersonalityEdit(personality)}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
                       <div
                         className={cn(
-                          "w-3 h-3 rounded-full bg-gradient-to-r",
-                          avatar.personality.color
+                          "w-6 h-6 rounded-md bg-gradient-to-r flex items-center justify-center",
+                          personality.color
                         )}
-                      ></div>
-                      <span className="text-xs text-gray-500">
-                        {avatar.personality.name}
-                      </span>
+                      >
+                        {personality.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-sm truncate">
+                          {personality.name}
+                        </h3>
+                        <div className="flex items-center gap-1">
+                          {getCategoryIcon(personality.category)}
+                          <span className="text-xs text-gray-500 capitalize">
+                            {personality.category}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 line-clamp-2">
-                      {avatar.personality.description}
+                    <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                      {personality.description}
                     </p>
-                  </div>
-                  {selectedAI?.id === avatar.id && (
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" />
+                    <div className="flex flex-wrap gap-1">
+                      {personality.traits.slice(0, 2).map((trait, index) => (
+                        <span
+                          key={index}
+                          className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-xs rounded-full"
+                        >
+                          {trait}
+                        </span>
+                      ))}
+                      {personality.traits.length > 2 && (
+                        <span className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-xs rounded-full">
+                          +{personality.traits.length - 2}
+                        </span>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {selectedAI && (
-              <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  Selected AI: {selectedAI.name}
-                </h3>
-                <div className="flex items-center gap-2 mb-3">
-                  <div
-                    className={cn(
-                      "w-4 h-4 rounded-full bg-gradient-to-r",
-                      selectedAI.personality.color
-                    )}
-                  ></div>
-                  <span className="text-sm font-medium text-gray-700">
-                    {selectedAI.personality.name}
-                  </span>
-                  <button
-                    onClick={() =>
-                      handlePersonalityEdit(selectedAI.personality)
-                    }
-                    className="p-1 hover:bg-blue-200 rounded transition-colors"
-                  >
-                    <Edit3 className="w-3 h-3 text-blue-600" />
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {selectedAI.personality.traits.map((trait, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
-                    >
-                      {trait}
-                    </span>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
           </div>
 
-          {/* User Avatar Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <User className="w-6 h-6 text-green-600" />
-                Your Avatar & Personality
+          {/* Main Content Area */}
+          <div className="lg:col-span-3 space-y-8">
+            {/* Avatar Selection Section */}
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <User className="w-6 h-6 text-blue-600" />
+                Avatar Selection
               </h2>
-              <Settings className="w-5 h-5 text-green-500" />
-            </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {userAvatars.map((avatar) => (
-                <div
-                  key={avatar.id}
-                  onClick={() => handleUserSelection(avatar)}
-                  className={cn(
-                    "relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:scale-105",
-                    userAvatar?.id === avatar.id
-                      ? "border-green-500 bg-green-50 shadow-lg"
-                      : "border-gray-200 hover:border-gray-300"
-                  )}
-                >
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">{avatar.image}</div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
-                      {avatar.name}
-                    </h3>
-                    <div className="flex items-center justify-center gap-1 mb-2">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* AI Avatars */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <Bot className="w-5 h-5 text-blue-500" />
+                    AI Companions
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {aiAvatars.map((avatar) => (
                       <div
+                        key={avatar.id}
+                        onClick={() => handleAISelection(avatar)}
                         className={cn(
-                          "w-3 h-3 rounded-full bg-gradient-to-r",
-                          avatar.personality.color
+                          "relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:scale-105",
+                          selectedAI?.id === avatar.id
+                            ? "border-blue-500 bg-blue-50 shadow-lg"
+                            : "border-gray-200 hover:border-gray-300"
                         )}
-                      ></div>
-                      <span className="text-xs text-gray-500">
-                        {avatar.personality.name}
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600 line-clamp-2">
-                      {avatar.personality.description}
-                    </p>
+                      >
+                        <div className="text-center">
+                          <div className="text-4xl mb-2">{avatar.image}</div>
+                          <h4 className="font-semibold text-gray-900 mb-1">
+                            {avatar.name}
+                          </h4>
+                          <p className="text-xs text-gray-600 line-clamp-2">
+                            {avatar.personality.description}
+                          </p>
+                        </div>
+                        {selectedAI?.id === avatar.id && (
+                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                  {userAvatar?.id === avatar.id && (
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                  )}
                 </div>
-              ))}
+
+                {/* User Avatars */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <User className="w-5 h-5 text-green-500" />
+                    Your Avatar
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {userAvatars.map((avatar) => (
+                      <div
+                        key={avatar.id}
+                        onClick={() => handleUserSelection(avatar)}
+                        className={cn(
+                          "relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:scale-105",
+                          userAvatar?.id === avatar.id
+                            ? "border-green-500 bg-green-50 shadow-lg"
+                            : "border-gray-200 hover:border-gray-300"
+                        )}
+                      >
+                        <div className="text-center">
+                          <div className="text-4xl mb-2">{avatar.image}</div>
+                          <h4 className="font-semibold text-gray-900 mb-1">
+                            {avatar.name}
+                          </h4>
+                          <p className="text-xs text-gray-600 line-clamp-2">
+                            {avatar.personality.description}
+                          </p>
+                        </div>
+                        {userAvatar?.id === avatar.id && (
+                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Selected Avatars Summary */}
+              {(selectedAI || userAvatar) && (
+                <div className="mt-6 p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-200">
+                  <h3 className="font-semibold text-gray-900 mb-3">
+                    Selected Avatars
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {selectedAI && (
+                      <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                        <div className="text-2xl">{selectedAI.image}</div>
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {selectedAI.name}
+                          </p>
+                          <p className="text-sm text-gray-600">AI Companion</p>
+                        </div>
+                      </div>
+                    )}
+                    {userAvatar && (
+                      <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                        <div className="text-2xl">{userAvatar.image}</div>
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {userAvatar.name}
+                          </p>
+                          <p className="text-sm text-gray-600">Your Avatar</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {userAvatar && (
-              <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  Your Avatar: {userAvatar.name}
-                </h3>
-                <div className="flex items-center gap-2 mb-3">
-                  <div
-                    className={cn(
-                      "w-4 h-4 rounded-full bg-gradient-to-r",
-                      userAvatar.personality.color
-                    )}
-                  ></div>
-                  <span className="text-sm font-medium text-gray-700">
-                    {userAvatar.personality.name}
-                  </span>
-                  <button
-                    onClick={() =>
-                      handlePersonalityEdit(userAvatar.personality)
-                    }
-                    className="p-1 hover:bg-green-200 rounded transition-colors"
-                  >
-                    <Edit3 className="w-3 h-3 text-green-600" />
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {userAvatar.personality.traits.map((trait, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full"
-                    >
-                      {trait}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+            {/* Personality Selection Section */}
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <Star className="w-6 h-6 text-yellow-500" />
+                Personality Selection
+              </h2>
 
-        {/* Available Personalities */}
-        <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Star className="w-6 h-6 text-yellow-500" />
-            Available Personalities
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {personalities.map((personality) => (
-              <div
-                key={personality.id}
-                className="p-4 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <div
-                    className={cn(
-                      "w-8 h-8 rounded-lg bg-gradient-to-r flex items-center justify-center",
-                      personality.color
-                    )}
-                  >
-                    {personality.icon}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      {personality.name}
-                    </h3>
-                    <div className="flex items-center gap-1">
-                      {getCategoryIcon(personality.category)}
-                      <span className="text-xs text-gray-500 capitalize">
-                        {personality.category}
-                      </span>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* AI Personality */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <Bot className="w-5 h-5 text-blue-500" />
+                    AI Personality
+                  </h3>
+                  {selectedAI ? (
+                    <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="text-2xl">{selectedAI.image}</div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">
+                            {selectedAI.name}
+                          </h4>
+                          <div className="flex items-center gap-2">
+                            <div
+                              className={cn(
+                                "w-4 h-4 rounded-full bg-gradient-to-r",
+                                selectedAI.personality.color
+                              )}
+                            ></div>
+                            <span className="text-sm font-medium text-gray-700">
+                              {selectedAI.personality.name}
+                            </span>
+                            <button
+                              onClick={() =>
+                                handlePersonalityEdit(selectedAI.personality)
+                              }
+                              className="p-1 hover:bg-blue-200 rounded transition-colors"
+                            >
+                              <Edit3 className="w-3 h-3 text-blue-600" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-3">
+                        {selectedAI.personality.description}
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {selectedAI.personality.traits.map((trait, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                          >
+                            {trait}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="p-8 text-center text-gray-500 border-2 border-dashed border-gray-300 rounded-xl">
+                      <Bot className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                      <p>Select an AI companion first to view personality</p>
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm text-gray-600 mb-3">
-                  {personality.description}
-                </p>
-                <div className="flex flex-wrap gap-1">
-                  {personality.traits.slice(0, 2).map((trait, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
-                    >
-                      {trait}
-                    </span>
-                  ))}
-                  {personality.traits.length > 2 && (
-                    <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                      +{personality.traits.length - 2}
-                    </span>
+
+                {/* User Personality */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <User className="w-5 h-5 text-green-500" />
+                    Your Personality
+                  </h3>
+                  {userAvatar ? (
+                    <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="text-2xl">{userAvatar.image}</div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">
+                            {userAvatar.name}
+                          </h4>
+                          <div className="flex items-center gap-2">
+                            <div
+                              className={cn(
+                                "w-4 h-4 rounded-full bg-gradient-to-r",
+                                userAvatar.personality.color
+                              )}
+                            ></div>
+                            <span className="text-sm font-medium text-gray-700">
+                              {userAvatar.personality.name}
+                            </span>
+                            <button
+                              onClick={() =>
+                                handlePersonalityEdit(userAvatar.personality)
+                              }
+                              className="p-1 hover:bg-green-200 rounded transition-colors"
+                            >
+                              <Edit3 className="w-3 h-3 text-green-600" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-3">
+                        {userAvatar.personality.description}
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {userAvatar.personality.traits.map((trait, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full"
+                          >
+                            {trait}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-8 text-center text-gray-500 border-2 border-dashed border-gray-300 rounded-xl">
+                      <User className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                      <p>Select your avatar first to view personality</p>
+                    </div>
                   )}
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
