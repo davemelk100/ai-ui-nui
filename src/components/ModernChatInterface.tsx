@@ -21,7 +21,7 @@ const ModernChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
-      content: "Hello! I'm Melks. How can I help you today?",
+              content: "Hello! I'm your AI assistant. How can I help you today?",
       role: "assistant",
       timestamp: new Date(),
     },
@@ -63,7 +63,7 @@ const ModernChatInterface: React.FC = () => {
     setTimeout(() => {
       const aiResponse: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        content: `I understand you said: "${userMessage.content}". This is Melks responding to demonstrate the modern chat interface. In a real application, this would be connected to an AI API like OpenAI, Anthropic, or similar services.`,
+        content: `I understand you said: "${userMessage.content}". This is your AI assistant responding to demonstrate the modern chat interface. In a real application, this would be connected to an AI API like OpenAI, Anthropic, or similar services.`,
         role: "assistant",
         timestamp: new Date(),
       };
@@ -95,8 +95,8 @@ const ModernChatInterface: React.FC = () => {
               <Zap className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Melks</h1>
-              <p className="text-sm text-gray-500">Modern AI Assistant</p>
+              <h1 className="text-xl font-bold text-gray-900">AI Assistant</h1>
+              <p className="text-sm text-gray-500">Your AI Companion</p>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@ const ModernChatInterface: React.FC = () => {
               </button>
             </div>
             <div className="mt-3 text-xs text-gray-500 text-center">
-              Melks may produce inaccurate information. Press Enter to send,
+              AI may produce inaccurate information. Press Enter to send,
               Shift+Enter for new line.
             </div>
           </form>

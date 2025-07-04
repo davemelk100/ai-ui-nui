@@ -26,7 +26,7 @@ const VoiceChatInterface: React.FC = () => {
     {
       id: "1",
       content:
-        "Hello! I'm Melks. I'm ready for a voice conversation. Just click the microphone to start speaking.",
+        "Hello! I'm your AI assistant. I'm ready for a voice conversation. Just click the microphone to start speaking.",
       role: "assistant",
       timestamp: new Date(),
       duration: 3,
@@ -85,7 +85,7 @@ const VoiceChatInterface: React.FC = () => {
       const aiResponse: VoiceMessage = {
         id: (Date.now() + 1).toString(),
         content:
-          "I heard your voice message! This is Melks responding with a simulated voice response. The interface shows audio visualizations and speech patterns.",
+          "I heard your voice message! This is your AI assistant responding with a simulated voice response. The interface shows audio visualizations and speech patterns.",
         role: "assistant",
         timestamp: new Date(),
         duration: 4,

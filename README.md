@@ -1,4 +1,4 @@
-# Melks Chat Interface
+# AI Chat Interface
 
 A modern, beautiful React application that offers a fresh take on familiar AI chat interface concepts from platforms like ChatGPT, Grok, Perplexity, and Claude. Built with TypeScript, Tailwind CSS, and Lucide React icons. Features multiple UI variations to showcase different design approaches and innovative features.
 
@@ -20,7 +20,7 @@ A modern, beautiful React application that offers a fresh take on familiar AI ch
 - Keyboard shortcuts (Enter to send, Shift+Enter for new line)
 - Message actions (copy, feedback, more options)
 - Smooth scrolling to latest messages
-- Melks assistant integration
+- AI assistant integration
 
 ### 🔧 Interactive Elements
 

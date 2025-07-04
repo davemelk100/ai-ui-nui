@@ -425,11 +425,11 @@ const DragDropInterface: React.FC = () => {
       {
         id: "member-1",
         type: "team-member",
-        name: "Melks AI",
+        name: "AI Assistant",
         description: "AI Lead team member",
         status: "pending",
         data: {
-          name: "Melks",
+          name: "AI Assistant",
           role: "AI Lead",
           avatar: "🤖",
           status: "online",
@@ -463,7 +463,7 @@ const DragDropInterface: React.FC = () => {
           description:
             "Unique voice-based conversation UI with audio visualizations",
           status: "completed",
-          creator: "Melks",
+          creator: "AI Assistant",
           likes: 12,
           comments: 5,
         },

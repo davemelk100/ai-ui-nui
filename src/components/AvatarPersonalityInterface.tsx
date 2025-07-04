@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   User,
   Bot,
@@ -17,6 +17,7 @@ import {
   Edit3,
   Save,
   X,
+  ChevronDown,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -56,57 +57,77 @@ const AvatarPersonalityInterface: React.FC = () => {
   const [showConversation, setShowConversation] = useState(false);
   const [conversationMessages, setConversationMessages] = useState<any[]>([]);
   const [inputMessage, setInputMessage] = useState("");
+  const [showAIDropdown, setShowAIDropdown] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showPersonalityDropdown, setShowPersonalityDropdown] = useState(false);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest(".dropdown-container")) {
+        setShowAIDropdown(false);
+        setShowUserDropdown(false);
+        setShowPersonalityDropdown(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const personalities: Personality[] = [
     {
-      id: "creative",
-      name: "Creative Muse",
+      id: "extroverted",
+      name: "Extroverted",
       description:
-        "Inspirational and artistic, helps with creative projects and brainstorming",
-      traits: ["Imaginative", "Artistic", "Inspirational", "Open-minded"],
-      icon: "🎨",
-      color: "from-purple-500 to-pink-500",
-      category: "creative",
+        "Outgoing and sociable, loves conversation and being around people",
+      traits: ["Sociable", "Energetic", "Talkative", "Friendly"],
+      icon: "😊",
+      color: "from-yellow-500 to-orange-500",
+      category: "social",
     },
     {
-      id: "technical",
-      name: "Tech Expert",
+      id: "introverted",
+      name: "Introverted",
       description:
-        "Logical and analytical, perfect for coding and technical discussions",
-      traits: ["Logical", "Analytical", "Precise", "Problem-solver"],
-      icon: "💻",
-      color: "from-blue-500 to-cyan-500",
-      category: "technical",
+        "Thoughtful and reserved, prefers deep conversations and quiet reflection",
+      traits: ["Thoughtful", "Reserved", "Deep", "Reflective"],
+      icon: "🤔",
+      color: "from-blue-500 to-indigo-500",
+      category: "social",
     },
     {
-      id: "analytical",
-      name: "Data Analyst",
+      id: "optimistic",
+      name: "Optimistic",
       description:
-        "Research-focused and detail-oriented, ideal for analysis and insights",
-      traits: ["Detail-oriented", "Research-focused", "Insightful", "Thorough"],
-      icon: "📊",
-      color: "from-orange-500 to-red-500",
+        "Positive and hopeful, always sees the bright side of situations",
+      traits: ["Positive", "Hopeful", "Cheerful", "Encouraging"],
+      icon: "☀️",
+      color: "from-yellow-400 to-orange-400",
+      category: "social",
+    },
+    {
+      id: "practical",
+      name: "Practical",
+      description:
+        "Down-to-earth and realistic, focuses on what works and gets things done",
+      traits: ["Realistic", "Efficient", "Pragmatic", "Reliable"],
+      icon: "⚡",
+      color: "from-gray-600 to-gray-800",
       category: "analytical",
     },
     {
-      id: "musical",
-      name: "Music Lover",
+      id: "empathetic",
+      name: "Empathetic",
       description:
-        "Rhythmic and harmonious, great for music and audio discussions",
-      traits: ["Rhythmic", "Harmonious", "Melodic", "Expressive"],
-      icon: "🎵",
+        "Understanding and caring, deeply feels and connects with others' emotions",
+      traits: ["Caring", "Understanding", "Compassionate", "Supportive"],
+      icon: "💝",
       color: "from-pink-500 to-rose-500",
-      category: "artistic",
-    },
-    {
-      id: "scholar",
-      name: "Knowledge Seeker",
-      description:
-        "Wise and learned, ideal for educational and philosophical discussions",
-      traits: ["Wise", "Learned", "Philosophical", "Curious"],
-      icon: "📚",
-      color: "from-teal-500 to-cyan-500",
-      category: "analytical",
+      category: "social",
     },
   ];
 
@@ -114,8 +135,9 @@ const AvatarPersonalityInterface: React.FC = () => {
     {
       id: "ai-2",
       name: "Claude",
-      image: "🤖",
-      personality: personalities[1], // Tech Expert
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[1], // Introverted
       isAI: true,
       isSelected: false,
       productDescription:
@@ -124,8 +146,9 @@ const AvatarPersonalityInterface: React.FC = () => {
     {
       id: "ai-3",
       name: "GPT-4",
-      image: "🤖",
-      personality: personalities[2], // Data Analyst
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[2], // Optimistic
       isAI: true,
       isSelected: false,
       productDescription:
@@ -134,8 +157,9 @@ const AvatarPersonalityInterface: React.FC = () => {
     {
       id: "ai-4",
       name: "Gemini",
-      image: "🤖",
-      personality: personalities[4], // Knowledge Seeker
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[4], // Empathetic
       isAI: true,
       isSelected: false,
       productDescription:
@@ -144,8 +168,9 @@ const AvatarPersonalityInterface: React.FC = () => {
     {
       id: "ai-5",
       name: "Copilot",
-      image: "🤖",
-      personality: personalities[3], // Music Lover
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[3], // Practical
       isAI: true,
       isSelected: false,
       productDescription:
@@ -154,8 +179,9 @@ const AvatarPersonalityInterface: React.FC = () => {
     {
       id: "ai-6",
       name: "Llama",
-      image: "🤖",
-      personality: personalities[0], // Creative Muse
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[0], // Extroverted
       isAI: true,
       isSelected: false,
       productDescription:
@@ -167,40 +193,45 @@ const AvatarPersonalityInterface: React.FC = () => {
     {
       id: "user-1",
       name: "Alex",
-      image: "👨‍💻",
-      personality: personalities[1], // Tech Expert
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[1], // Introverted
       isAI: false,
       isSelected: false,
     },
     {
       id: "user-2",
       name: "Sarah",
-      image: "🎨",
-      personality: personalities[0], // Creative Muse
+      image:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[0], // Extroverted
       isAI: false,
       isSelected: false,
     },
     {
       id: "user-3",
       name: "Mike",
-      image: "🏆",
-      personality: personalities[2], // Data Analyst
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[2], // Optimistic
       isAI: false,
       isSelected: false,
     },
     {
       id: "user-4",
       name: "Emma",
-      image: "📚",
-      personality: personalities[4], // Knowledge Seeker
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[4], // Empathetic
       isAI: false,
       isSelected: false,
     },
     {
       id: "user-5",
       name: "Jordan",
-      image: "🎵",
-      personality: personalities[3], // Music Lover
+      image:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+      personality: personalities[3], // Practical
       isAI: false,
       isSelected: false,
     },
@@ -222,11 +253,7 @@ const AvatarPersonalityInterface: React.FC = () => {
       setUserAvatar(null);
       userAvatars.forEach((user) => (user.isSelected = false));
     } else {
-      // If a personality is selected, apply it to the new avatar
-      const avatarWithPersonality = selectedPersonality
-        ? { ...avatar, personality: selectedPersonality }
-        : avatar;
-      setUserAvatar(avatarWithPersonality);
+      setUserAvatar(avatar);
       userAvatars.forEach((user) => (user.isSelected = user.id === avatar.id));
     }
   };
@@ -234,16 +261,16 @@ const AvatarPersonalityInterface: React.FC = () => {
   const handlePersonalitySelection = (personality: Personality) => {
     if (selectedPersonality?.id === personality.id) {
       setSelectedPersonality(null);
-      // Optionally, clear personality from userAvatar
-      if (userAvatar) {
-        setUserAvatar({ ...userAvatar, personality: userAvatar.personality });
+      // Optionally, clear personality from selectedAI
+      if (selectedAI) {
+        setSelectedAI({ ...selectedAI, personality: selectedAI.personality });
       }
     } else {
       setSelectedPersonality(personality);
-      // Update the user avatar's personality if one is selected
-      if (userAvatar) {
-        const updatedUserAvatar = { ...userAvatar, personality };
-        setUserAvatar(updatedUserAvatar);
+      // Update the AI avatar's personality if one is selected
+      if (selectedAI) {
+        const updatedAI = { ...selectedAI, personality };
+        setSelectedAI(updatedAI);
       }
     }
   };
@@ -400,62 +427,88 @@ const AvatarPersonalityInterface: React.FC = () => {
             <div className="flex-1 flex items-center gap-4 min-w-0">
               {/* AI Companion */}
               <div className="flex items-center gap-2 min-w-0">
-                <span className="font-semibold text-blue-600">AI:</span>
+                <span className="font-semibold text-blue-600 text-lg">AI:</span>
                 {selectedAI ? (
                   <div className="flex items-center gap-2">
-                    {selectedAI.image.startsWith("/") ? (
+                    {selectedAI.image.startsWith("http") ? (
                       <img
                         src={selectedAI.image}
                         alt={selectedAI.name}
-                        className="w-7 h-7 object-contain rounded"
+                        className="w-8 h-8 object-cover rounded-full"
+                      />
+                    ) : selectedAI.image.startsWith("/") ? (
+                      <img
+                        src={selectedAI.image}
+                        alt={selectedAI.name}
+                        className="w-8 h-8 object-contain rounded"
                       />
                     ) : (
-                      <span className="text-2xl">{selectedAI.image}</span>
+                      <span className="text-3xl">{selectedAI.image}</span>
                     )}
-                    <span className="font-medium text-gray-900 truncate">
+                    <span className="font-medium text-gray-900 truncate text-lg">
                       {selectedAI.name}
                     </span>
                   </div>
                 ) : (
-                  <span className="text-gray-400">None</span>
+                  <span className="text-gray-400 text-lg">None</span>
                 )}
               </div>
 
               {/* Divider */}
-              <span className="mx-2 text-gray-300 hidden md:inline">|</span>
+              <span className="mx-2 text-gray-300 hidden md:inline text-lg">
+                |
+              </span>
 
               {/* User Avatar */}
               <div className="flex items-center gap-2 min-w-0">
-                <span className="font-semibold text-green-600">You:</span>
+                <span className="font-semibold text-green-600 text-lg">
+                  You:
+                </span>
                 {userAvatar ? (
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl">{userAvatar.image}</span>
-                    <span className="font-medium text-gray-900 truncate">
+                    {userAvatar.image.startsWith("http") ? (
+                      <img
+                        src={userAvatar.image}
+                        alt={userAvatar.name}
+                        className="w-8 h-8 object-cover rounded-full"
+                      />
+                    ) : userAvatar.image.startsWith("/") ? (
+                      <img
+                        src={userAvatar.image}
+                        alt={userAvatar.name}
+                        className="w-8 h-8 object-contain rounded"
+                      />
+                    ) : (
+                      <span className="text-3xl">{userAvatar.image}</span>
+                    )}
+                    <span className="font-medium text-gray-900 truncate text-lg">
                       {userAvatar.name}
                     </span>
                   </div>
                 ) : (
-                  <span className="text-gray-400">None</span>
+                  <span className="text-gray-400 text-lg">None</span>
                 )}
               </div>
 
               {/* Divider */}
-              <span className="mx-2 text-gray-300 hidden md:inline">|</span>
+              <span className="mx-2 text-gray-300 hidden md:inline text-lg">
+                |
+              </span>
 
               {/* Personality */}
               <div className="flex items-center gap-2 min-w-0">
-                <span className="font-semibold text-purple-600">
+                <span className="font-semibold text-purple-600 text-lg">
                   Personality:
                 </span>
                 {selectedPersonality ? (
                   <div className="flex items-center gap-2">
-                    <span className="text-lg">{selectedPersonality.icon}</span>
-                    <span className="font-medium text-gray-900 truncate">
+                    <span className="text-2xl">{selectedPersonality.icon}</span>
+                    <span className="font-medium text-gray-900 truncate text-lg">
                       {selectedPersonality.name}
                     </span>
                   </div>
                 ) : (
-                  <span className="text-gray-400">None</span>
+                  <span className="text-gray-400 text-lg">None</span>
                 )}
               </div>
             </div>
@@ -484,8 +537,36 @@ const AvatarPersonalityInterface: React.FC = () => {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <div className="text-2xl">{userAvatar.image}</div>
-                  <div className="text-2xl">{selectedAI.image}</div>
+                  {userAvatar.image.startsWith("http") ? (
+                    <img
+                      src={userAvatar.image}
+                      alt={userAvatar.name}
+                      className="w-8 h-8 object-cover rounded-full"
+                    />
+                  ) : userAvatar.image.startsWith("/") ? (
+                    <img
+                      src={userAvatar.image}
+                      alt={userAvatar.name}
+                      className="w-8 h-8 object-contain rounded"
+                    />
+                  ) : (
+                    <div className="text-2xl">{userAvatar.image}</div>
+                  )}
+                  {selectedAI.image.startsWith("http") ? (
+                    <img
+                      src={selectedAI.image}
+                      alt={selectedAI.name}
+                      className="w-8 h-8 object-cover rounded-full"
+                    />
+                  ) : selectedAI.image.startsWith("/") ? (
+                    <img
+                      src={selectedAI.image}
+                      alt={selectedAI.name}
+                      className="w-8 h-8 object-contain rounded"
+                    />
+                  ) : (
+                    <div className="text-2xl">{selectedAI.image}</div>
+                  )}
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">
@@ -516,11 +597,24 @@ const AvatarPersonalityInterface: React.FC = () => {
                     message.isAI ? "justify-start" : "justify-end"
                   }`}
                 >
-                  {message.isAI && (
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                      {selectedAI.image}
-                    </div>
-                  )}
+                  {message.isAI &&
+                    (selectedAI.image.startsWith("http") ? (
+                      <img
+                        src={selectedAI.image}
+                        alt={selectedAI.name}
+                        className="w-8 h-8 object-cover rounded-full"
+                      />
+                    ) : selectedAI.image.startsWith("/") ? (
+                      <img
+                        src={selectedAI.image}
+                        alt={selectedAI.name}
+                        className="w-8 h-8 object-contain rounded-full"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                        {selectedAI.image}
+                      </div>
+                    ))}
                   <div
                     className={`max-w-xs px-4 py-2 rounded-2xl ${
                       message.isAI
@@ -536,11 +630,24 @@ const AvatarPersonalityInterface: React.FC = () => {
                       })}
                     </p>
                   </div>
-                  {!message.isAI && (
-                    <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                      {userAvatar.image}
-                    </div>
-                  )}
+                  {!message.isAI &&
+                    (userAvatar.image.startsWith("http") ? (
+                      <img
+                        src={userAvatar.image}
+                        alt={userAvatar.name}
+                        className="w-8 h-8 object-cover rounded-full"
+                      />
+                    ) : userAvatar.image.startsWith("/") ? (
+                      <img
+                        src={userAvatar.image}
+                        alt={userAvatar.name}
+                        className="w-8 h-8 object-contain rounded-full"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                        {userAvatar.image}
+                      </div>
+                    ))}
                 </div>
               ))}
             </div>
@@ -571,311 +678,34 @@ const AvatarPersonalityInterface: React.FC = () => {
           {/* Avatar Selection Section */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* AI Avatars */}
+              {/* AI Companions */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Bot className="w-5 h-5 text-blue-500" />
                   AI Companions
                 </h3>
 
-                {/* Selection indicator */}
-                {selectedAI && (
-                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 flex items-center justify-center">
-                        {selectedAI.image.startsWith("/") ? (
-                          <img
-                            src={selectedAI.image}
-                            alt={selectedAI.name}
-                            className="w-6 h-6 object-contain"
-                          />
-                        ) : (
-                          <div className="text-xl">{selectedAI.image}</div>
-                        )}
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900 text-sm">
-                          Selected: {selectedAI.name}
-                        </p>
-                        <p className="text-xs text-gray-600">
-                          {selectedAI.productDescription ||
-                            selectedAI.personality.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
                 <div className="space-y-3">
-                  {aiAvatars.map((avatar) => (
-                    <div
-                      key={avatar.id}
-                      onClick={() => handleAISelection(avatar)}
-                      className={cn(
-                        "relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50",
-                        selectedAI?.id === avatar.id
-                          ? "border-blue-500 bg-blue-50 shadow-lg"
-                          : "border-gray-200 hover:border-gray-300"
-                      )}
-                    >
-                      {/* Top selection indicator */}
-                      {selectedAI?.id === avatar.id && (
-                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                          <div className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                            Selected
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                          {avatar.image.startsWith("/") ? (
-                            <img
-                              src={avatar.image}
-                              alt={avatar.name}
-                              className="w-10 h-10 object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = "none";
-                                const fallback =
-                                  target.nextElementSibling as HTMLElement;
-                                if (fallback) {
-                                  fallback.textContent = "🤖";
-                                  fallback.style.display = "block";
-                                }
-                              }}
-                            />
-                          ) : (
-                            <div className="text-3xl">{avatar.image}</div>
-                          )}
-                          {/* Fallback emoji */}
-                          <div className="text-3xl hidden">{avatar.image}</div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-gray-900 mb-1">
-                            {avatar.name}
-                          </h4>
-                          <p className="text-sm text-gray-600 line-clamp-2">
-                            {avatar.productDescription ||
-                              avatar.personality.description}
-                          </p>
-                        </div>
-                        {selectedAI?.id === avatar.id && (
-                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Check className="w-4 h-4 text-white" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* User Avatars */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <User className="w-5 h-5 text-green-500" />
-                  Your Avatar
-                </h3>
-
-                {/* Selection indicator */}
-                {userAvatar && (
-                  <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="text-xl">{userAvatar.image}</div>
-                      <div>
-                        <p className="font-medium text-gray-900 text-sm">
-                          Selected: {userAvatar.name}
-                        </p>
-                        <p className="text-xs text-gray-600">
-                          {selectedPersonality
-                            ? selectedPersonality.description
-                            : userAvatar.personality.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div className="space-y-3">
-                  {userAvatars.map((avatar) => (
-                    <div
-                      key={avatar.id}
-                      onClick={() => handleUserSelection(avatar)}
-                      className={cn(
-                        "relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50",
-                        userAvatar?.id === avatar.id
-                          ? "border-green-500 bg-green-50 shadow-lg"
-                          : "border-gray-200 hover:border-gray-300"
-                      )}
-                    >
-                      {/* Top selection indicator */}
-                      {userAvatar?.id === avatar.id && (
-                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                          <div className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                            Selected
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                          <div className="text-3xl">{avatar.image}</div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-gray-900 mb-1">
-                            {avatar.name}
-                          </h4>
-                          <p className="text-sm text-gray-600 line-clamp-2">
-                            {selectedPersonality && userAvatar?.id === avatar.id
-                              ? selectedPersonality.description
-                              : avatar.personality.description}
-                          </p>
-                        </div>
-                        {userAvatar?.id === avatar.id && (
-                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Check className="w-4 h-4 text-white" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Personality Library */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Palette className="w-5 h-5 text-purple-500" />
-                  Personality Library
-                </h3>
-
-                {/* Selection indicator */}
-                {selectedPersonality && (
-                  <div className="mb-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="text-2xl">{selectedPersonality.icon}</div>
-                      <div>
-                        <p className="font-medium text-gray-900 text-sm">
-                          Selected: {selectedPersonality.name}
-                        </p>
-                        <p className="text-xs text-gray-600">
-                          {selectedPersonality.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div className="space-y-3">
-                  {personalities.map((personality) => (
-                    <div
-                      key={personality.id}
-                      onClick={() => handlePersonalitySelection(personality)}
-                      className={cn(
-                        "relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50",
-                        selectedPersonality?.id === personality.id
-                          ? "border-purple-500 bg-purple-50 shadow-lg"
-                          : "border-gray-200 hover:border-gray-300"
-                      )}
-                    >
-                      {/* Top selection indicator */}
-                      {selectedPersonality?.id === personality.id && (
-                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                          <div className="bg-purple-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                            Selected
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                          <div className="text-3xl">{personality.icon}</div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-gray-900 mb-1">
-                            {personality.name}
-                          </h4>
-                          <p className="text-sm text-gray-600 line-clamp-2">
-                            {personality.description}
-                          </p>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          {selectedPersonality?.id === personality.id && (
-                            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                              <Check className="w-4 h-4 text-white" />
-                            </div>
-                          )}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handlePersonalityEdit(personality);
-                            }}
-                            className="text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 px-2 py-1 rounded transition-colors"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Selected Avatars Summary with Personality Selection */}
-            {(selectedAI || userAvatar) && (
-              <div className="mt-6 p-6 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-200">
-                <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Star className="w-5 h-5 text-yellow-500" />
-                  Selected Avatars & Personalities
-                </h3>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* AI Avatar and Personality */}
-                  {selectedAI && (
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                        <div className="w-10 h-10 flex items-center justify-center">
-                          {selectedAI.image.startsWith("/") ? (
-                            <img
-                              src={selectedAI.image}
-                              alt={selectedAI.name}
-                              className="w-8 h-8 object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = "none";
-                                const fallback =
-                                  target.nextElementSibling as HTMLElement;
-                                if (fallback) {
-                                  fallback.textContent = "🤖";
-                                  fallback.style.display = "block";
-                                }
-                              }}
-                            />
-                          ) : (
-                            <div className="text-2xl">{selectedAI.image}</div>
-                          )}
-                          <div className="text-2xl hidden">
-                            {selectedAI.image}
-                          </div>
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-900">
-                            {selectedAI.name}
-                          </p>
-                          <p className="text-sm text-gray-600">AI Companion</p>
-                        </div>
-                      </div>
-
-                      <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-8 h-8 flex items-center justify-center">
-                            {selectedAI.image.startsWith("/") ? (
+                  {selectedAI ? (
+                    <div className="relative">
+                      {/* Selected AI Display */}
+                      <div
+                        onClick={() => setShowAIDropdown(!showAIDropdown)}
+                        className="relative p-4 rounded-xl border-2 border-blue-500 bg-blue-50 shadow-lg cursor-pointer transition-all duration-200 hover:bg-blue-100 dropdown-container"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                            {selectedAI.image.startsWith("http") ? (
                               <img
                                 src={selectedAI.image}
                                 alt={selectedAI.name}
-                                className="w-6 h-6 object-contain"
+                                className="w-10 h-10 object-cover rounded-full"
+                              />
+                            ) : selectedAI.image.startsWith("/") ? (
+                              <img
+                                src={selectedAI.image}
+                                alt={selectedAI.name}
+                                className="w-10 h-10 object-contain"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement;
                                   target.style.display = "none";
@@ -888,103 +718,421 @@ const AvatarPersonalityInterface: React.FC = () => {
                                 }}
                               />
                             ) : (
-                              <div className="text-lg">{selectedAI.image}</div>
+                              <div className="text-3xl">{selectedAI.image}</div>
                             )}
-                            <div className="text-lg hidden">
+                            <div className="text-3xl hidden">
                               {selectedAI.image}
                             </div>
                           </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 text-sm">
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-gray-900">
                               {selectedAI.name}
                             </h4>
-                            <div className="flex items-center gap-2">
-                              <div
-                                className={cn(
-                                  "w-3 h-3 rounded-full bg-gradient-to-r",
-                                  selectedAI.personality.color
-                                )}
-                              ></div>
-                              <span className="text-xs font-medium text-gray-700">
-                                {selectedAI.personality.name}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  handlePersonalityEdit(selectedAI.personality)
-                                }
-                                className="p-1 hover:bg-blue-200 rounded transition-colors"
-                              >
-                                <Edit3 className="w-3 h-3 text-blue-600" />
-                              </button>
-                            </div>
+                          </div>
+                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="w-6 h-6 flex items-center justify-center">
+                            <ChevronDown
+                              className={cn(
+                                "w-4 h-4 text-gray-500 transition-transform",
+                                showAIDropdown && "rotate-180"
+                              )}
+                            />
                           </div>
                         </div>
-                        <p className="text-xs text-gray-600">
-                          {selectedAI.personality.description}
-                        </p>
                       </div>
-                    </div>
-                  )}
 
-                  {/* User Avatar and Personality */}
-                  {userAvatar && (
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                        <div className="text-2xl">{userAvatar.image}</div>
-                        <div>
-                          <p className="font-medium text-gray-900">
-                            {userAvatar.name}
-                          </p>
-                          <p className="text-sm text-gray-600">Your Avatar</p>
+                      {/* Dropdown */}
+                      {showAIDropdown && (
+                        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
+                          {aiAvatars.map((avatar) => (
+                            <div
+                              key={avatar.id}
+                              onClick={() => {
+                                handleAISelection(avatar);
+                                setShowAIDropdown(false);
+                              }}
+                              className={cn(
+                                "p-3 cursor-pointer transition-colors hover:bg-gray-50",
+                                selectedAI?.id === avatar.id && "bg-blue-50"
+                              )}
+                            >
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+                                  {avatar.image.startsWith("http") ? (
+                                    <img
+                                      src={avatar.image}
+                                      alt={avatar.name}
+                                      className="w-6 h-6 object-cover rounded-full"
+                                    />
+                                  ) : avatar.image.startsWith("/") ? (
+                                    <img
+                                      src={avatar.image}
+                                      alt={avatar.name}
+                                      className="w-6 h-6 object-contain"
+                                      onError={(e) => {
+                                        const target =
+                                          e.target as HTMLImageElement;
+                                        target.style.display = "none";
+                                        const fallback =
+                                          target.nextElementSibling as HTMLElement;
+                                        if (fallback) {
+                                          fallback.textContent = "🤖";
+                                          fallback.style.display = "block";
+                                        }
+                                      }}
+                                    />
+                                  ) : (
+                                    <div className="text-xl">
+                                      {avatar.image}
+                                    </div>
+                                  )}
+                                  <div className="text-xl hidden">
+                                    {avatar.image}
+                                  </div>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h5 className="font-medium text-gray-900 text-sm">
+                                    {avatar.name}
+                                  </h5>
+                                </div>
+                                {selectedAI?.id === avatar.id && (
+                                  <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <Check className="w-2 h-2 text-white" />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      </div>
-
-                      <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="text-lg">{userAvatar.image}</div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 text-sm">
-                              {userAvatar.name}
+                      )}
+                    </div>
+                  ) : (
+                    // Show all options when nothing is selected
+                    aiAvatars.map((avatar) => (
+                      <div
+                        key={avatar.id}
+                        onClick={() => handleAISelection(avatar)}
+                        className="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50 border-gray-200 hover:border-gray-300"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                            {avatar.image.startsWith("http") ? (
+                              <img
+                                src={avatar.image}
+                                alt={avatar.name}
+                                className="w-10 h-10 object-cover rounded-full"
+                              />
+                            ) : avatar.image.startsWith("/") ? (
+                              <img
+                                src={avatar.image}
+                                alt={avatar.name}
+                                className="w-10 h-10 object-contain"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = "none";
+                                  const fallback =
+                                    target.nextElementSibling as HTMLElement;
+                                  if (fallback) {
+                                    fallback.textContent = "🤖";
+                                    fallback.style.display = "block";
+                                  }
+                                }}
+                              />
+                            ) : (
+                              <div className="text-3xl">{avatar.image}</div>
+                            )}
+                            <div className="text-3xl hidden">
+                              {avatar.image}
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-gray-900">
+                              {avatar.name}
                             </h4>
-                            <div className="flex items-center gap-2">
-                              <div
-                                className={cn(
-                                  "w-3 h-3 rounded-full bg-gradient-to-r",
-                                  selectedPersonality
-                                    ? selectedPersonality.color
-                                    : userAvatar.personality.color
-                                )}
-                              ></div>
-                              <span className="text-xs font-medium text-gray-700">
-                                {selectedPersonality
-                                  ? selectedPersonality.name
-                                  : userAvatar.personality.name}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  handlePersonalityEdit(
-                                    selectedPersonality ||
-                                      userAvatar.personality
-                                  )
-                                }
-                                className="p-1 hover:bg-green-200 rounded transition-colors"
-                              >
-                                <Edit3 className="w-3 h-3 text-green-600" />
-                              </button>
-                            </div>
                           </div>
                         </div>
-                        <p className="text-xs text-gray-600">
-                          {selectedPersonality
-                            ? selectedPersonality.description
-                            : userAvatar.personality.description}
-                        </p>
                       </div>
-                    </div>
+                    ))
                   )}
                 </div>
               </div>
-            )}
+
+              {/* AI Personality */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <Palette className="w-5 h-5 text-purple-500" />
+                  AI Personality
+                </h3>
+
+                <div className="space-y-3">
+                  {selectedPersonality ? (
+                    <div className="relative">
+                      {/* Selected Personality Display */}
+                      <div
+                        onClick={() =>
+                          setShowPersonalityDropdown(!showPersonalityDropdown)
+                        }
+                        className="relative p-4 rounded-xl border-2 border-purple-500 bg-purple-50 shadow-lg cursor-pointer transition-all duration-200 hover:bg-purple-100 dropdown-container"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                            <div className="text-3xl">
+                              {selectedPersonality.icon}
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-gray-900 mb-1">
+                              {selectedPersonality.name}
+                            </h4>
+                            <p className="text-sm text-gray-600 line-clamp-2">
+                              {selectedPersonality.description}
+                            </p>
+                          </div>
+                          <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="w-6 h-6 flex items-center justify-center">
+                            <ChevronDown
+                              className={cn(
+                                "w-4 h-4 text-gray-500 transition-transform",
+                                showPersonalityDropdown && "rotate-180"
+                              )}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Dropdown */}
+                      {showPersonalityDropdown && (
+                        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
+                          {personalities.map((personality) => (
+                            <div
+                              key={personality.id}
+                              onClick={() => {
+                                handlePersonalitySelection(personality);
+                                setShowPersonalityDropdown(false);
+                              }}
+                              className={cn(
+                                "p-3 cursor-pointer transition-colors hover:bg-gray-50",
+                                selectedPersonality?.id === personality.id &&
+                                  "bg-purple-50"
+                              )}
+                            >
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+                                  <div className="text-xl">
+                                    {personality.icon}
+                                  </div>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h5 className="font-medium text-gray-900 text-sm">
+                                    {personality.name}
+                                  </h5>
+                                  <p className="text-xs text-gray-600 line-clamp-1">
+                                    {personality.description}
+                                  </p>
+                                </div>
+                                {selectedPersonality?.id === personality.id && (
+                                  <div className="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <Check className="w-2 h-2 text-white" />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    // Show all options when nothing is selected
+                    personalities.map((personality) => (
+                      <div
+                        key={personality.id}
+                        onClick={() => handlePersonalitySelection(personality)}
+                        className="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50 border-gray-200 hover:border-gray-300"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                            <div className="text-3xl">{personality.icon}</div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-gray-900 mb-1">
+                              {personality.name}
+                            </h4>
+                            <p className="text-sm text-gray-600 line-clamp-2">
+                              {personality.description}
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handlePersonalityEdit(personality);
+                              }}
+                              className="text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 px-2 py-1 rounded transition-colors"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* User Avatars */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <User className="w-5 h-5 text-green-500" />
+                  Your Avatar
+                </h3>
+
+                <div className="space-y-3">
+                  {userAvatar ? (
+                    <div className="relative">
+                      {/* Selected User Display */}
+                      <div
+                        onClick={() => setShowUserDropdown(!showUserDropdown)}
+                        className="relative p-4 rounded-xl border-2 border-green-500 bg-green-50 shadow-lg cursor-pointer transition-all duration-200 hover:bg-green-100 dropdown-container"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                            {userAvatar.image.startsWith("http") ? (
+                              <img
+                                src={userAvatar.image}
+                                alt={userAvatar.name}
+                                className="w-10 h-10 object-cover rounded-full"
+                              />
+                            ) : userAvatar.image.startsWith("/") ? (
+                              <img
+                                src={userAvatar.image}
+                                alt={userAvatar.name}
+                                className="w-10 h-10 object-contain"
+                              />
+                            ) : (
+                              <div className="text-3xl">{userAvatar.image}</div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-gray-900 mb-1">
+                              {userAvatar.name}
+                            </h4>
+                            <p className="text-sm text-gray-600 line-clamp-2">
+                              {userAvatar.personality.description}
+                            </p>
+                          </div>
+                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="w-6 h-6 flex items-center justify-center">
+                            <ChevronDown
+                              className={cn(
+                                "w-4 h-4 text-gray-500 transition-transform",
+                                showUserDropdown && "rotate-180"
+                              )}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Dropdown */}
+                      {showUserDropdown && (
+                        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
+                          {userAvatars.map((avatar) => (
+                            <div
+                              key={avatar.id}
+                              onClick={() => {
+                                handleUserSelection(avatar);
+                                setShowUserDropdown(false);
+                              }}
+                              className={cn(
+                                "p-3 cursor-pointer transition-colors hover:bg-gray-50",
+                                userAvatar?.id === avatar.id && "bg-green-50"
+                              )}
+                            >
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+                                  {avatar.image.startsWith("http") ? (
+                                    <img
+                                      src={avatar.image}
+                                      alt={avatar.name}
+                                      className="w-6 h-6 object-cover rounded-full"
+                                    />
+                                  ) : avatar.image.startsWith("/") ? (
+                                    <img
+                                      src={avatar.image}
+                                      alt={avatar.name}
+                                      className="w-6 h-6 object-contain"
+                                    />
+                                  ) : (
+                                    <div className="text-xl">
+                                      {avatar.image}
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h5 className="font-medium text-gray-900 text-sm">
+                                    {avatar.name}
+                                  </h5>
+                                  <p className="text-xs text-gray-600 line-clamp-1">
+                                    {avatar.personality.description}
+                                  </p>
+                                </div>
+                                {userAvatar?.id === avatar.id && (
+                                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <Check className="w-2 h-2 text-white" />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    // Show all options when nothing is selected
+                    userAvatars.map((avatar) => (
+                      <div
+                        key={avatar.id}
+                        onClick={() => handleUserSelection(avatar)}
+                        className="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50 border-gray-200 hover:border-gray-300"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                            {avatar.image.startsWith("http") ? (
+                              <img
+                                src={avatar.image}
+                                alt={avatar.name}
+                                className="w-10 h-10 object-cover rounded-full"
+                              />
+                            ) : avatar.image.startsWith("/") ? (
+                              <img
+                                src={avatar.image}
+                                alt={avatar.name}
+                                className="w-10 h-10 object-contain"
+                              />
+                            ) : (
+                              <div className="text-3xl">{avatar.image}</div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-gray-900 mb-1">
+                              {avatar.name}
+                            </h4>
+                            <p className="text-sm text-gray-600 line-clamp-2">
+                              {avatar.personality.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
