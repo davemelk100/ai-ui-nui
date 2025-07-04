@@ -1,32 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import {
-  Users,
-  UserPlus,
-  Settings,
   TrendingUp,
-  Bot,
   Search,
 } from "lucide-react";
-
-interface ContentItem {
-  id: string;
-  type:
-    | "design"
-    | "code"
-    | "research"
-    | "presentation"
-    | "prototype"
-    | "documentation";
-  title: string;
-  description: string;
-  status: "draft" | "in-progress" | "review" | "completed";
-  creator: string;
-  lastModified: Date;
-  likes: number;
-  comments: number;
-  thumbnail?: string;
-  tags: string[];
-}
 
 const CollaborativeWorkspace: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);

@@ -2,19 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
   User,
   Bot,
-  Heart,
   MessageCircle,
   Palette,
-  Star,
-  Lightbulb,
-  Music,
-  Camera,
-  Gamepad2,
-  BookOpen,
-  Code,
   Check,
-  Plus,
-  Edit3,
   Save,
   X,
   ChevronDown,
@@ -296,20 +286,7 @@ const AvatarPersonalityInterface: React.FC = () => {
     setEditingPersonality(null);
   };
 
-  const getCategoryIcon = (category: Personality["category"]) => {
-    switch (category) {
-      case "creative":
-        return <Palette className="w-4 h-4" />;
-      case "technical":
-        return <Code className="w-4 h-4" />;
-      case "social":
-        return <Heart className="w-4 h-4" />;
-      case "analytical":
-        return <Lightbulb className="w-4 h-4" />;
-      case "artistic":
-        return <Camera className="w-4 h-4" />;
-    }
-  };
+
 
   const startConversation = () => {
     if (!selectedAI || !userAvatar) return;
