@@ -1,13 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import {
   TrendingUp,
-  Search,
   Brain,
   Zap,
   Settings,
   Activity,
   BarChart3,
-  Cpu,
   Clock,
   Target,
   Sparkles,
@@ -19,9 +17,7 @@ import {
   Shield,
   Globe,
   Users,
-  Star,
   CheckCircle,
-  AlertCircle,
   Play,
   Pause,
   RotateCcw,
@@ -55,7 +51,7 @@ const CollaborativeWorkspace: React.FC = () => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [activePersonality, setActivePersonality] =
     useState("General Assistant");
-  const [customPrompts, setCustomPrompts] = useState([
+  const customPrompts = [
     {
       id: 1,
       name: "Code Review",
@@ -66,11 +62,7 @@ const CollaborativeWorkspace: React.FC = () => {
       name: "Data Analysis",
       prompt: "Analyze this dataset and provide insights:",
     },
-  ]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  ];
 
   // Scroll to top when component mounts - with enhanced implementation
   useEffect(() => {

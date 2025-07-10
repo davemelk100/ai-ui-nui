@@ -25,7 +25,6 @@ interface Personality {
   name: string;
   description: string;
   traits: string[];
-  icon: React.ReactNode;
   color: string;
   category: "creative" | "technical" | "social" | "analytical" | "artistic";
 }
@@ -64,7 +63,6 @@ const AvatarPersonalityInterface: React.FC = () => {
       description:
         "Inspirational and artistic, helps with creative projects and brainstorming",
       traits: ["Imaginative", "Artistic", "Inspirational", "Open-minded"],
-      icon: <Palette className="w-5 h-5" />,
       color: "from-purple-500 to-pink-500",
       category: "creative",
     },
@@ -74,7 +72,6 @@ const AvatarPersonalityInterface: React.FC = () => {
       description:
         "Logical and analytical, perfect for coding and technical discussions",
       traits: ["Logical", "Analytical", "Precise", "Problem-solver"],
-      icon: <Code className="w-5 h-5" />,
       color: "from-blue-500 to-cyan-500",
       category: "technical",
     },
@@ -84,7 +81,6 @@ const AvatarPersonalityInterface: React.FC = () => {
       description:
         "Research-focused and detail-oriented, ideal for analysis and insights",
       traits: ["Detail-oriented", "Research-focused", "Insightful", "Thorough"],
-      icon: <Lightbulb className="w-5 h-5" />,
       color: "from-orange-500 to-red-500",
       category: "analytical",
     },
@@ -94,7 +90,6 @@ const AvatarPersonalityInterface: React.FC = () => {
       description:
         "Rhythmic and harmonious, great for music and audio discussions",
       traits: ["Rhythmic", "Harmonious", "Melodic", "Expressive"],
-      icon: <Music className="w-5 h-5" />,
       color: "from-pink-500 to-rose-500",
       category: "artistic",
     },
@@ -104,7 +99,6 @@ const AvatarPersonalityInterface: React.FC = () => {
       description:
         "Wise and learned, ideal for educational and philosophical discussions",
       traits: ["Wise", "Learned", "Philosophical", "Curious"],
-      icon: <BookOpen className="w-5 h-5" />,
       color: "from-teal-500 to-cyan-500",
       category: "analytical",
     },
@@ -438,24 +432,10 @@ const AvatarPersonalityInterface: React.FC = () => {
                               src={avatar.image}
                               alt={avatar.name}
                               className="w-10 h-10 object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = "none";
-                                const fallback =
-                                  target.nextElementSibling as HTMLElement;
-                                if (fallback) {
-                                  fallback.textContent = "🤖";
-                                  fallback.style.display = "block";
-                                }
-                              }}
                             />
                           ) : (
                             <div className="text-3xl">{avatar.image}</div>
                           )}
-                          {/* Fallback emoji */}
-                          <div className="text-3xl hidden">
-                            {avatar.image}
-                          </div>
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-semibold text-gray-900 mb-1">
@@ -570,7 +550,7 @@ const AvatarPersonalityInterface: React.FC = () => {
                           selectedPersonality.color
                         )}
                       >
-                        {selectedPersonality.icon}
+                        {getCategoryIcon(selectedPersonality.category)}
                       </div>
                       <div>
                         <p className="font-medium text-gray-900 text-sm">
@@ -612,7 +592,7 @@ const AvatarPersonalityInterface: React.FC = () => {
                             personality.color
                           )}
                         >
-                          {personality.icon}
+                          {getCategoryIcon(personality.category)}
                         </div>
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-gray-900 text-sm truncate">
@@ -705,23 +685,10 @@ const AvatarPersonalityInterface: React.FC = () => {
                                 src={selectedAI.image}
                                 alt={selectedAI.name}
                                 className="w-8 h-8 object-contain"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.style.display = "none";
-                                  const fallback =
-                                    target.nextElementSibling as HTMLElement;
-                                  if (fallback) {
-                                    fallback.textContent = "🤖";
-                                    fallback.style.display = "block";
-                                  }
-                                }}
                               />
                             ) : (
                               <div className="text-2xl">{selectedAI.image}</div>
                             )}
-                            <div className="text-2xl hidden">
-                              {selectedAI.image}
-                            </div>
                           </div>
                           <div>
                             <p className="font-medium text-gray-900">
@@ -741,25 +708,12 @@ const AvatarPersonalityInterface: React.FC = () => {
                                   src={selectedAI.image}
                                   alt={selectedAI.name}
                                   className="w-6 h-6 object-contain"
-                                  onError={(e) => {
-                                    const target = e.target as HTMLImageElement;
-                                    target.style.display = "none";
-                                    const fallback =
-                                      target.nextElementSibling as HTMLElement;
-                                    if (fallback) {
-                                      fallback.textContent = "🤖";
-                                      fallback.style.display = "block";
-                                    }
-                                  }}
                                 />
                               ) : (
                                 <div className="text-lg">
                                   {selectedAI.image}
                                 </div>
                               )}
-                              <div className="text-lg hidden">
-                                {selectedAI.image}
-                              </div>
                             </div>
                             <div>
                               <h4 className="font-semibold text-gray-900 text-sm">

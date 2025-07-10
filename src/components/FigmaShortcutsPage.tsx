@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import {
-  Search,
   Zap,
   MousePointer,
   Type,
@@ -10,12 +9,10 @@ import {
   Palette,
   Apple,
   Monitor,
-  Copy,
 } from "lucide-react";
 import Layout from "./Layout";
 
 const FigmaShortcutsPage: React.FC = () => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   // Create refs for each category
   const categoryRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [isListView, setIsListView] = useState(false);

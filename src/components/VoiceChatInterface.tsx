@@ -6,8 +6,6 @@ import {
   VolumeX,
   Play,
   Pause,
-  BarChart3,
-  Settings,
   Headphones,
   Radio,
 } from "lucide-react";
@@ -34,7 +32,7 @@ const VoiceChatInterface: React.FC = () => {
       isPlaying: false,
     },
   ]);
-  const [isListening, setIsListening] = useState(false);
+
   const [isRecording, setIsRecording] = useState(false);
   const [currentVolume, setCurrentVolume] = useState(75);
   const [isMuted, setIsMuted] = useState(false);
@@ -55,7 +53,6 @@ const VoiceChatInterface: React.FC = () => {
 
   const startRecording = () => {
     setIsRecording(true);
-    setIsListening(true);
 
     // Simulate recording for 3 seconds
     setTimeout(() => {
@@ -65,7 +62,6 @@ const VoiceChatInterface: React.FC = () => {
 
   const stopRecording = () => {
     setIsRecording(false);
-    setIsListening(false);
 
     const userMessage: VoiceMessage = {
       id: Date.now().toString(),

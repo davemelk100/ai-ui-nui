@@ -13,15 +13,6 @@ import {
   Menu,
   X,
   Home,
-  Zap,
-  Activity,
-  BarChart3,
-  Users,
-  Star,
-  Code,
-  Database,
-  Shield,
-  Globe,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 

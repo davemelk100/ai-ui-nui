@@ -188,9 +188,9 @@ const DraggableContentItem: React.FC<{ component: DraggableComponent }> = ({
             {data.description}
           </p>
           <div className="flex items-center space-x-2 text-xs text-gray-400 mt-2">
-            <span>👤 {data.creator}</span>
-            <span>❤️ {data.likes}</span>
-            <span>💬 {data.comments}</span>
+            <span>{data.creator}</span>
+            <span>{data.likes}</span>
+            <span>{data.comments}</span>
           </div>
         </div>
       </div>
@@ -433,7 +433,7 @@ const DragDropInterface: React.FC = () => {
         data: {
           name: "AI Assistant",
           role: "AI Lead",
-          avatar: "🤖",
+          avatar: "AI", // was "🤖"
           status: "online",
           isAI: true,
         },
@@ -447,7 +447,7 @@ const DragDropInterface: React.FC = () => {
         data: {
           name: "Alex",
           role: "Developer",
-          avatar: "👨‍💻",
+          avatar: "A", // was "👨‍💻"
           status: "busy",
           isAI: false,
         },
