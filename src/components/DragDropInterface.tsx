@@ -242,46 +242,6 @@ const DragDropInterface: React.FC = () => {
       ],
     },
     {
-      id: "active",
-      title: "Active Components",
-      description: "Components in use",
-      items: [],
-      acceptTypes: [
-        "message",
-        "team-member",
-        "content-item",
-        "chat-element",
-        "workspace-item",
-      ],
-    },
-    {
-      id: "testing",
-      title: "Testing Zone",
-      description: "Components being tested",
-      items: [],
-      acceptTypes: [
-        "message",
-        "team-member",
-        "content-item",
-        "chat-element",
-        "workspace-item",
-      ],
-    },
-    {
-      id: "archive",
-      title: "Archive",
-      description: "Retired components",
-      items: [],
-      acceptTypes: [
-        "message",
-        "team-member",
-        "content-item",
-        "chat-element",
-        "workspace-item",
-      ],
-      maxItems: 15,
-    },
-    {
       id: "layout-left",
       title: "Left Panel",
       description: "Navigation and sidebar components",
@@ -554,7 +514,7 @@ const DragDropInterface: React.FC = () => {
       description="Drag real UI components between different zones to organize your interface"
       icon={<MousePointer className="w-6 h-6 text-white" />}
     >
-      <div className="flex-1 overflow-y-auto p-8">
+      <div className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">
           {/* Controls */}
           <div className="mb-6 flex gap-4">
@@ -575,14 +535,14 @@ const DragDropInterface: React.FC = () => {
           </div>
 
           {/* Drop Zones Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {dropZones.map((zone) => (
               <div
                 key={zone.id}
                 className={`bg-white rounded-xl shadow-lg border-2 border-dashed transition-all duration-200 ${
                   dragOverZone === zone.id
                     ? "border-blue-400 bg-blue-50 scale-105"
-                    : "border-gray-200 hover:border-gray-300"
+                    : "border-gray-200"
                 }`}
                 onDragOver={(e) => handleDragOver(e, zone.id)}
                 onDragLeave={handleDragLeave}
@@ -605,7 +565,7 @@ const DragDropInterface: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="space-y-3 min-h-[300px]">
+                  <div className="space-y-3 min-h-[300px] max-h-[400px] overflow-y-auto">
                     {zone.items.map((item) => (
                       <div
                         key={item.id}
@@ -662,7 +622,7 @@ const DragDropInterface: React.FC = () => {
                 className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
                   dragOverZone === "layout-left"
                     ? "border-blue-400 bg-blue-50 scale-105"
-                    : "border-gray-300 hover:border-gray-400"
+                    : "border-gray-300"
                 }`}
                 onDragOver={(e) => handleDragOver(e, "layout-left")}
                 onDragLeave={handleDragLeave}
@@ -672,7 +632,7 @@ const DragDropInterface: React.FC = () => {
                   <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
                     Left Panel
                   </h4>
-                  <div className="space-y-2 min-h-[300px]">
+                  <div className="space-y-2 min-h-[300px] max-h-[350px] overflow-y-auto">
                     {dropZones
                       .find((z) => z.id === "layout-left")
                       ?.items.map((item) => (
@@ -708,7 +668,7 @@ const DragDropInterface: React.FC = () => {
                 className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
                   dragOverZone === "layout-center"
                     ? "border-blue-400 bg-blue-50 scale-105"
-                    : "border-gray-300 hover:border-gray-400"
+                    : "border-gray-300"
                 }`}
                 onDragOver={(e) => handleDragOver(e, "layout-center")}
                 onDragLeave={handleDragLeave}
@@ -718,7 +678,7 @@ const DragDropInterface: React.FC = () => {
                   <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
                     Main Content
                   </h4>
-                  <div className="space-y-2 min-h-[300px]">
+                  <div className="space-y-2 min-h-[300px] max-h-[350px] overflow-y-auto">
                     {dropZones
                       .find((z) => z.id === "layout-center")
                       ?.items.map((item) => (
@@ -754,7 +714,7 @@ const DragDropInterface: React.FC = () => {
                 className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
                   dragOverZone === "layout-right"
                     ? "border-blue-400 bg-blue-50 scale-105"
-                    : "border-gray-300 hover:border-gray-400"
+                    : "border-gray-300"
                 }`}
                 onDragOver={(e) => handleDragOver(e, "layout-right")}
                 onDragLeave={handleDragLeave}
@@ -764,7 +724,7 @@ const DragDropInterface: React.FC = () => {
                   <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
                     Right Panel
                   </h4>
-                  <div className="space-y-2 min-h-[300px]">
+                  <div className="space-y-2 min-h-[300px] max-h-[350px] overflow-y-auto">
                     {dropZones
                       .find((z) => z.id === "layout-right")
                       ?.items.map((item) => (

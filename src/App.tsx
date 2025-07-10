@@ -6,7 +6,7 @@ import VoiceChatInterface from "./components/VoiceChatInterface";
 import CollaborativeWorkspace from "./components/CollaborativeWorkspace";
 import DragDropInterface from "./components/DragDropInterface";
 import AvatarPersonalityInterface from "./components/AvatarPersonalityInterface";
-import FigmaShortcutsPage from "./components/FigmaShortcutsPage";
+
 import "./App.css";
 
 function App() {
@@ -20,7 +20,6 @@ function App() {
           <Route path="/dark" element={<VoiceChatInterface />} />
           <Route path="/dragdrop" element={<DragDropInterface />} />
           <Route path="/avatars" element={<AvatarPersonalityInterface />} />
-          <Route path="/figma" element={<FigmaShortcutsPage />} />
         </Routes>
       </div>
     </Router>

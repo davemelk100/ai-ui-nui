@@ -6,7 +6,6 @@ import {
   Mic,
   MousePointer,
   User,
-  Palette,
   Settings,
   Plus,
   Search,
@@ -70,12 +69,6 @@ const Layout: React.FC<LayoutProps> = ({
       label: "Avatars",
       icon: <User className="w-5 h-5" />,
       description: "Select AI companions and customize avatars",
-    },
-    {
-      path: "/figma",
-      label: "Figma Shortcuts",
-      icon: <Palette className="w-5 h-5" />,
-      description: "Essential Figma shortcuts for designers",
     },
   ];
 
@@ -397,7 +390,7 @@ const Layout: React.FC<LayoutProps> = ({
         )}
 
         {/* Page Content */}
-        <div className="flex-1 overflow-hidden">{children}</div>
+        <div className="flex-1 overflow-auto">{children}</div>
       </div>
     </div>
   );
