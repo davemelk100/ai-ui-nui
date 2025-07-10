@@ -106,7 +106,7 @@ const VoiceChatInterface: React.FC = () => {
     return Array.from({ length: count }, (_, i) => (
       <div
         key={i}
-        className={`w-1 bg-gradient-to-t from-purple-400 to-pink-400 rounded-full transition-all duration-150 ${
+        className={`w-1 bg-gray-400 rounded-full transition-all duration-150 ${
           isActive ? "animate-pulse" : ""
         }`}
         style={{
@@ -128,7 +128,7 @@ const VoiceChatInterface: React.FC = () => {
             className={`w-full h-16 rounded-xl flex items-center justify-center space-x-3 transition-all duration-300 ${
               isRecording
                 ? "bg-red-500 hover:bg-red-600 animate-pulse"
-                : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                : "bg-gray-600 hover:bg-gray-700"
             } text-white font-medium shadow-lg`}
           >
             {isRecording ? (
@@ -157,15 +157,15 @@ const VoiceChatInterface: React.FC = () => {
           <h3 className="text-white font-semibold mb-4">Audio Settings</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-purple-200 text-sm">Volume</span>
+              <span className="text-gray-300 text-sm">Volume</span>
               <button
                 onClick={() => setIsMuted(!isMuted)}
                 className="p-2 rounded-lg hover:bg-white/10 transition-colors"
               >
                 {isMuted ? (
-                  <VolumeX className="w-5 h-5 text-red-400" />
+                  <VolumeX className="w-5 h-5 text-gray-400" />
                 ) : (
-                  <Volume2 className="w-5 h-5 text-green-400" />
+                  <Volume2 className="w-5 h-5 text-gray-300" />
                 )}
               </button>
             </div>
@@ -178,7 +178,7 @@ const VoiceChatInterface: React.FC = () => {
               disabled={isMuted}
               className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
             />
-            <div className="text-center text-purple-200 text-sm">
+            <div className="text-center text-gray-300 text-sm">
               {isMuted ? "Muted" : `${currentVolume}%`}
             </div>
           </div>
@@ -206,9 +206,7 @@ const VoiceChatInterface: React.FC = () => {
           >
             <div
               className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
-                message.role === "user"
-                  ? "bg-gradient-to-r from-purple-500 to-pink-500"
-                  : "bg-gradient-to-r from-blue-500 to-cyan-500"
+                message.role === "user" ? "bg-gray-600" : "bg-gray-500"
               } shadow-lg`}
             >
               {message.role === "user" ? (
@@ -226,7 +224,7 @@ const VoiceChatInterface: React.FC = () => {
               <div
                 className={`inline-block p-6 rounded-2xl shadow-lg ${
                   message.role === "user"
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                    ? "bg-gray-600 text-white"
                     : "bg-white/10 backdrop-blur-sm text-white border border-white/20"
                 }`}
               >

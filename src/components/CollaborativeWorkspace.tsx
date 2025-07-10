@@ -40,6 +40,7 @@ import Layout from "./Layout";
 
 const CollaborativeWorkspace: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [selectedModel, setSelectedModel] = useState("GPT-4");
   const [temperature, setTemperature] = useState(0.5);
   const [responseLength, setResponseLength] = useState("Auto");
@@ -71,13 +72,44 @@ const CollaborativeWorkspace: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Scroll to top when component mounts - with enhanced implementation
   useEffect(() => {
-    scrollToBottom();
-  }, []);
+    // Try multiple approaches to ensure scroll to top works
+    const scrollToTop = () => {
+      // Method 1: Use the content ref if available
+      if (contentRef.current) {
+        contentRef.current.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
 
-  // Scroll to top when component mounts
-  useEffect(() => {
-    window.scrollTo(0, 0);
+      // Method 2: Find scrollable container by class
+      const scrollableContainer = document.querySelector(
+        ".flex-1.overflow-y-auto"
+      );
+      if (scrollableContainer) {
+        scrollableContainer.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
+
+      // Method 3: Window scroll as fallback
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    };
+
+    // Initial scroll
+    scrollToTop();
+
+    // Force scroll to top after a short delay to handle any layout issues
+    setTimeout(scrollToTop, 100);
   }, []);
 
   const aiModels = [
@@ -185,7 +217,7 @@ const CollaborativeWorkspace: React.FC = () => {
       headerActions={headerActions}
     >
       {/* AI Configuration Dashboard */}
-      <div className="flex-1 overflow-y-auto p-8">
+      <div ref={contentRef} className="flex-1 overflow-y-auto p-8">
         {/* Real-time Performance Overview */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
