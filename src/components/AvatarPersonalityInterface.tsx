@@ -8,8 +8,10 @@ import {
   Save,
   X,
   ChevronDown,
+  Plus,
 } from "lucide-react";
 import { cn } from "../lib/utils";
+import Layout from "./Layout";
 
 interface Personality {
   id: string;
@@ -286,8 +288,6 @@ const AvatarPersonalityInterface: React.FC = () => {
     setEditingPersonality(null);
   };
 
-
-
   const startConversation = () => {
     if (!selectedAI || !userAvatar) return;
 
@@ -385,63 +385,132 @@ const AvatarPersonalityInterface: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-slate-50 to-blue-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Avatar & Personality Selector
-          </h1>
-          <p className="text-gray-600">
-            Choose your AI companion and customize your own avatar and
-            personality
-          </p>
-        </div>
+    <Layout
+      title="Avatar & Personality Selector"
+      description="Choose your AI companion and customize your own avatar and personality"
+      icon={<User className="w-6 h-6 text-white" />}
+    >
+      <div className="flex-1 overflow-y-auto p-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Selection Summary Card */}
+          {(selectedAI || userAvatar || selectedPersonality) && (
+            <div className="mb-8 max-w-6xl mx-auto bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center justify-between">
+              <div className="flex-1 flex items-center gap-4 min-w-0">
+                {/* AI Companion */}
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="font-semibold text-blue-600 text-lg">
+                    AI:
+                  </span>
+                  {selectedAI ? (
+                    <div className="flex items-center gap-2">
+                      {selectedAI.image.startsWith("http") ? (
+                        <img
+                          src={selectedAI.image}
+                          alt={selectedAI.name}
+                          className="w-8 h-8 object-cover rounded-full"
+                        />
+                      ) : selectedAI.image.startsWith("/") ? (
+                        <img
+                          src={selectedAI.image}
+                          alt={selectedAI.name}
+                          className="w-8 h-8 object-contain rounded"
+                        />
+                      ) : (
+                        <span className="text-3xl">{selectedAI.image}</span>
+                      )}
+                      <span className="font-medium text-gray-900 truncate text-lg">
+                        {selectedAI.name}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-gray-400 text-lg">None</span>
+                  )}
+                </div>
 
-        {/* Selection Summary Card */}
-        {(selectedAI || userAvatar || selectedPersonality) && (
-          <div className="mb-8 max-w-6xl mx-auto bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center justify-between">
-            <div className="flex-1 flex items-center gap-4 min-w-0">
-              {/* AI Companion */}
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="font-semibold text-blue-600 text-lg">AI:</span>
-                {selectedAI ? (
-                  <div className="flex items-center gap-2">
-                    {selectedAI.image.startsWith("http") ? (
-                      <img
-                        src={selectedAI.image}
-                        alt={selectedAI.name}
-                        className="w-8 h-8 object-cover rounded-full"
-                      />
-                    ) : selectedAI.image.startsWith("/") ? (
-                      <img
-                        src={selectedAI.image}
-                        alt={selectedAI.name}
-                        className="w-8 h-8 object-contain rounded"
-                      />
-                    ) : (
-                      <span className="text-3xl">{selectedAI.image}</span>
-                    )}
-                    <span className="font-medium text-gray-900 truncate text-lg">
-                      {selectedAI.name}
-                    </span>
-                  </div>
-                ) : (
-                  <span className="text-gray-400 text-lg">None</span>
-                )}
+                {/* Divider */}
+                <span className="mx-2 text-gray-300 hidden md:inline text-lg">
+                  |
+                </span>
+
+                {/* User Avatar */}
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="font-semibold text-green-600 text-lg">
+                    You:
+                  </span>
+                  {userAvatar ? (
+                    <div className="flex items-center gap-2">
+                      {userAvatar.image.startsWith("http") ? (
+                        <img
+                          src={userAvatar.image}
+                          alt={userAvatar.name}
+                          className="w-8 h-8 object-cover rounded-full"
+                        />
+                      ) : userAvatar.image.startsWith("/") ? (
+                        <img
+                          src={userAvatar.image}
+                          alt={userAvatar.name}
+                          className="w-8 h-8 object-contain rounded"
+                        />
+                      ) : (
+                        <span className="text-3xl">{userAvatar.image}</span>
+                      )}
+                      <span className="font-medium text-gray-900 truncate text-lg">
+                        {userAvatar.name}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-gray-400 text-lg">None</span>
+                  )}
+                </div>
+
+                {/* Divider */}
+                <span className="mx-2 text-gray-300 hidden md:inline text-lg">
+                  |
+                </span>
+
+                {/* Personality */}
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="font-semibold text-purple-600 text-lg">
+                    Personality:
+                  </span>
+                  {selectedPersonality ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">
+                        {selectedPersonality.icon}
+                      </span>
+                      <span className="font-medium text-gray-900 truncate text-lg">
+                        {selectedPersonality.name}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-gray-400 text-lg">None</span>
+                  )}
+                </div>
               </div>
 
-              {/* Divider */}
-              <span className="mx-2 text-gray-300 hidden md:inline text-lg">
-                |
-              </span>
+              {/* Start Conversation Button */}
+              {selectedAI &&
+                userAvatar &&
+                selectedPersonality &&
+                !showConversation && (
+                  <div className="flex-shrink-0">
+                    <button
+                      onClick={startConversation}
+                      className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                      Start Conversation
+                    </button>
+                  </div>
+                )}
+            </div>
+          )}
 
-              {/* User Avatar */}
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="font-semibold text-green-600 text-lg">
-                  You:
-                </span>
-                {userAvatar ? (
+          {/* Conversation Interface */}
+          {showConversation && selectedAI && userAvatar && (
+            <div className="mb-8 max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     {userAvatar.image.startsWith("http") ? (
                       <img
@@ -456,126 +525,9 @@ const AvatarPersonalityInterface: React.FC = () => {
                         className="w-8 h-8 object-contain rounded"
                       />
                     ) : (
-                      <span className="text-3xl">{userAvatar.image}</span>
+                      <div className="text-2xl">{userAvatar.image}</div>
                     )}
-                    <span className="font-medium text-gray-900 truncate text-lg">
-                      {userAvatar.name}
-                    </span>
-                  </div>
-                ) : (
-                  <span className="text-gray-400 text-lg">None</span>
-                )}
-              </div>
-
-              {/* Divider */}
-              <span className="mx-2 text-gray-300 hidden md:inline text-lg">
-                |
-              </span>
-
-              {/* Personality */}
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="font-semibold text-purple-600 text-lg">
-                  Personality:
-                </span>
-                {selectedPersonality ? (
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{selectedPersonality.icon}</span>
-                    <span className="font-medium text-gray-900 truncate text-lg">
-                      {selectedPersonality.name}
-                    </span>
-                  </div>
-                ) : (
-                  <span className="text-gray-400 text-lg">None</span>
-                )}
-              </div>
-            </div>
-
-            {/* Start Conversation Button */}
-            {selectedAI &&
-              userAvatar &&
-              selectedPersonality &&
-              !showConversation && (
-                <div className="flex-shrink-0">
-                  <button
-                    onClick={startConversation}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    Start Conversation
-                  </button>
-                </div>
-              )}
-          </div>
-        )}
-
-        {/* Conversation Interface */}
-        {showConversation && selectedAI && userAvatar && (
-          <div className="mb-8 max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  {userAvatar.image.startsWith("http") ? (
-                    <img
-                      src={userAvatar.image}
-                      alt={userAvatar.name}
-                      className="w-8 h-8 object-cover rounded-full"
-                    />
-                  ) : userAvatar.image.startsWith("/") ? (
-                    <img
-                      src={userAvatar.image}
-                      alt={userAvatar.name}
-                      className="w-8 h-8 object-contain rounded"
-                    />
-                  ) : (
-                    <div className="text-2xl">{userAvatar.image}</div>
-                  )}
-                  {selectedAI.image.startsWith("http") ? (
-                    <img
-                      src={selectedAI.image}
-                      alt={selectedAI.name}
-                      className="w-8 h-8 object-cover rounded-full"
-                    />
-                  ) : selectedAI.image.startsWith("/") ? (
-                    <img
-                      src={selectedAI.image}
-                      alt={selectedAI.name}
-                      className="w-8 h-8 object-contain rounded"
-                    />
-                  ) : (
-                    <div className="text-2xl">{selectedAI.image}</div>
-                  )}
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">
-                    {userAvatar.name} & {selectedAI.name}
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    {selectedPersonality
-                      ? selectedPersonality.name
-                      : userAvatar.personality.name}{" "}
-                    × {selectedAI.personality.name}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowConversation(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-
-            {/* Messages */}
-            <div className="h-96 overflow-y-auto mb-4 space-y-4 p-4 bg-gray-50 rounded-xl">
-              {conversationMessages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex gap-3 ${
-                    message.isAI ? "justify-start" : "justify-end"
-                  }`}
-                >
-                  {message.isAI &&
-                    (selectedAI.image.startsWith("http") ? (
+                    {selectedAI.image.startsWith("http") ? (
                       <img
                         src={selectedAI.image}
                         alt={selectedAI.name}
@@ -585,532 +537,403 @@ const AvatarPersonalityInterface: React.FC = () => {
                       <img
                         src={selectedAI.image}
                         alt={selectedAI.name}
-                        className="w-8 h-8 object-contain rounded-full"
+                        className="w-8 h-8 object-contain rounded"
                       />
                     ) : (
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                        {selectedAI.image}
-                      </div>
-                    ))}
-                  <div
-                    className={`max-w-xs px-4 py-2 rounded-2xl ${
-                      message.isAI
-                        ? "bg-white border border-gray-200 text-gray-900"
-                        : "bg-blue-500 text-white"
-                    }`}
-                  >
-                    <p className="text-sm">{message.content}</p>
-                    <p className="text-xs opacity-70 mt-1">
-                      {message.timestamp.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      <div className="text-2xl">{selectedAI.image}</div>
+                    )}
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {userAvatar.name} & {selectedAI.name}
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                      {selectedPersonality
+                        ? selectedPersonality.name
+                        : userAvatar.personality.name}{" "}
+                      × {selectedAI.personality.name}
                     </p>
                   </div>
-                  {!message.isAI &&
-                    (userAvatar.image.startsWith("http") ? (
-                      <img
-                        src={userAvatar.image}
-                        alt={userAvatar.name}
-                        className="w-8 h-8 object-cover rounded-full"
-                      />
-                    ) : userAvatar.image.startsWith("/") ? (
-                      <img
-                        src={userAvatar.image}
-                        alt={userAvatar.name}
-                        className="w-8 h-8 object-contain rounded-full"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                        {userAvatar.image}
-                      </div>
-                    ))}
                 </div>
-              ))}
-            </div>
-
-            {/* Input */}
-            <div className="flex gap-3">
-              <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Type your message..."
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                onClick={sendMessage}
-                disabled={!inputMessage.trim()}
-                className="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-              >
-                Send
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Main Content Area */}
-        <div className="max-w-6xl mx-auto">
-          {/* Avatar Selection Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* AI Companions */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Bot className="w-5 h-5 text-blue-500" />
-                  AI Companions
-                </h3>
-
-                <div className="space-y-3">
-                  {selectedAI ? (
-                    <div className="relative">
-                      {/* Selected AI Display */}
-                      <div
-                        onClick={() => setShowAIDropdown(!showAIDropdown)}
-                        className="relative p-4 rounded-xl border-2 border-blue-500 bg-blue-50 shadow-lg cursor-pointer transition-all duration-200 hover:bg-blue-100 dropdown-container"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                            {selectedAI.image.startsWith("http") ? (
-                              <img
-                                src={selectedAI.image}
-                                alt={selectedAI.name}
-                                className="w-10 h-10 object-cover rounded-full"
-                              />
-                            ) : selectedAI.image.startsWith("/") ? (
-                              <img
-                                src={selectedAI.image}
-                                alt={selectedAI.name}
-                                className="w-10 h-10 object-contain"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.style.display = "none";
-                                  const fallback =
-                                    target.nextElementSibling as HTMLElement;
-                                  if (fallback) {
-                                    fallback.textContent = "🤖";
-                                    fallback.style.display = "block";
-                                  }
-                                }}
-                              />
-                            ) : (
-                              <div className="text-3xl">{selectedAI.image}</div>
-                            )}
-                            <div className="text-3xl hidden">
-                              {selectedAI.image}
-                            </div>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-gray-900">
-                              {selectedAI.name}
-                            </h4>
-                          </div>
-                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Check className="w-4 h-4 text-white" />
-                          </div>
-                          <div className="w-6 h-6 flex items-center justify-center">
-                            <ChevronDown
-                              className={cn(
-                                "w-4 h-4 text-gray-500 transition-transform",
-                                showAIDropdown && "rotate-180"
-                              )}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Dropdown */}
-                      {showAIDropdown && (
-                        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
-                          {aiAvatars.map((avatar) => (
-                            <div
-                              key={avatar.id}
-                              onClick={() => {
-                                handleAISelection(avatar);
-                                setShowAIDropdown(false);
-                              }}
-                              className={cn(
-                                "p-3 cursor-pointer transition-colors hover:bg-gray-50",
-                                selectedAI?.id === avatar.id && "bg-blue-50"
-                              )}
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
-                                  {avatar.image.startsWith("http") ? (
-                                    <img
-                                      src={avatar.image}
-                                      alt={avatar.name}
-                                      className="w-6 h-6 object-cover rounded-full"
-                                    />
-                                  ) : avatar.image.startsWith("/") ? (
-                                    <img
-                                      src={avatar.image}
-                                      alt={avatar.name}
-                                      className="w-6 h-6 object-contain"
-                                      onError={(e) => {
-                                        const target =
-                                          e.target as HTMLImageElement;
-                                        target.style.display = "none";
-                                        const fallback =
-                                          target.nextElementSibling as HTMLElement;
-                                        if (fallback) {
-                                          fallback.textContent = "🤖";
-                                          fallback.style.display = "block";
-                                        }
-                                      }}
-                                    />
-                                  ) : (
-                                    <div className="text-xl">
-                                      {avatar.image}
-                                    </div>
-                                  )}
-                                  <div className="text-xl hidden">
-                                    {avatar.image}
-                                  </div>
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h5 className="font-medium text-gray-900 text-sm">
-                                    {avatar.name}
-                                  </h5>
-                                </div>
-                                {selectedAI?.id === avatar.id && (
-                                  <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <Check className="w-2 h-2 text-white" />
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    // Show all options when nothing is selected
-                    aiAvatars.map((avatar) => (
-                      <div
-                        key={avatar.id}
-                        onClick={() => handleAISelection(avatar)}
-                        className="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50 border-gray-200 hover:border-gray-300"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                            {avatar.image.startsWith("http") ? (
-                              <img
-                                src={avatar.image}
-                                alt={avatar.name}
-                                className="w-10 h-10 object-cover rounded-full"
-                              />
-                            ) : avatar.image.startsWith("/") ? (
-                              <img
-                                src={avatar.image}
-                                alt={avatar.name}
-                                className="w-10 h-10 object-contain"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.style.display = "none";
-                                  const fallback =
-                                    target.nextElementSibling as HTMLElement;
-                                  if (fallback) {
-                                    fallback.textContent = "🤖";
-                                    fallback.style.display = "block";
-                                  }
-                                }}
-                              />
-                            ) : (
-                              <div className="text-3xl">{avatar.image}</div>
-                            )}
-                            <div className="text-3xl hidden">
-                              {avatar.image}
-                            </div>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-gray-900">
-                              {avatar.name}
-                            </h4>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
+                <button
+                  onClick={() => setShowConversation(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
               </div>
 
-              {/* AI Personality */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Palette className="w-5 h-5 text-purple-500" />
-                  AI Personality
-                </h3>
+              {/* Messages */}
+              <div className="h-96 overflow-y-auto mb-4 space-y-4 p-4 bg-gray-50 rounded-xl">
+                {conversationMessages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex gap-3 ${
+                      message.isAI ? "justify-start" : "justify-end"
+                    }`}
+                  >
+                    {message.isAI &&
+                      (selectedAI.image.startsWith("http") ? (
+                        <img
+                          src={selectedAI.image}
+                          alt={selectedAI.name}
+                          className="w-8 h-8 object-cover rounded-full"
+                        />
+                      ) : selectedAI.image.startsWith("/") ? (
+                        <img
+                          src={selectedAI.image}
+                          alt={selectedAI.name}
+                          className="w-8 h-8 object-contain rounded-full"
+                        />
+                      ) : (
+                        <div className="text-2xl">{selectedAI.image}</div>
+                      ))}
+                    <div
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
+                        message.isAI
+                          ? "bg-white border border-gray-200 text-gray-900"
+                          : "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                      }`}
+                    >
+                      <p className="text-sm">{message.content}</p>
+                      <p className="text-xs opacity-70 mt-1">
+                        {message.timestamp.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    </div>
+                    {!message.isAI &&
+                      (userAvatar.image.startsWith("http") ? (
+                        <img
+                          src={userAvatar.image}
+                          alt={userAvatar.name}
+                          className="w-8 h-8 object-cover rounded-full"
+                        />
+                      ) : userAvatar.image.startsWith("/") ? (
+                        <img
+                          src={userAvatar.image}
+                          alt={userAvatar.name}
+                          className="w-8 h-8 object-contain rounded-full"
+                        />
+                      ) : (
+                        <div className="text-2xl">{userAvatar.image}</div>
+                      ))}
+                  </div>
+                ))}
+              </div>
 
-                <div className="space-y-3">
-                  {selectedPersonality ? (
-                    <div className="relative">
-                      {/* Selected Personality Display */}
-                      <div
-                        onClick={() =>
-                          setShowPersonalityDropdown(!showPersonalityDropdown)
-                        }
-                        className="relative p-4 rounded-xl border-2 border-purple-500 bg-purple-50 shadow-lg cursor-pointer transition-all duration-200 hover:bg-purple-100 dropdown-container"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                            <div className="text-3xl">
-                              {selectedPersonality.icon}
-                            </div>
+              {/* Message Input */}
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Type your message..."
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={!inputMessage.trim()}
+                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Main Selection Interface */}
+          {!showConversation && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* AI Companions */}
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    AI Companions
+                  </h2>
+                  <div className="relative dropdown-container">
+                    <button
+                      onClick={() => setShowAIDropdown(!showAIDropdown)}
+                      className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      <span>Filter</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                    {showAIDropdown && (
+                      <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                        <div className="p-2">
+                          <div className="text-xs font-semibold text-gray-500 mb-2">
+                            Categories
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-gray-900 mb-1">
-                              {selectedPersonality.name}
-                            </h4>
-                            <p className="text-sm text-gray-600 line-clamp-2">
-                              {selectedPersonality.description}
-                            </p>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">All</span>
+                          </label>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">Creative</span>
+                          </label>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">Technical</span>
+                          </label>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {aiAvatars.map((avatar) => (
+                    <div
+                      key={avatar.id}
+                      onClick={() => handleAISelection(avatar)}
+                      className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                        selectedAI?.id === avatar.id
+                          ? "border-blue-500 bg-blue-50"
+                          : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        {avatar.image.startsWith("http") ? (
+                          <img
+                            src={avatar.image}
+                            alt={avatar.name}
+                            className="w-12 h-12 object-cover rounded-full"
+                          />
+                        ) : avatar.image.startsWith("/") ? (
+                          <img
+                            src={avatar.image}
+                            alt={avatar.name}
+                            className="w-12 h-12 object-contain rounded"
+                          />
+                        ) : (
+                          <div className="text-4xl">{avatar.image}</div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold text-gray-900 truncate">
+                              {avatar.name}
+                            </h3>
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                           </div>
-                          <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                          <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                            {avatar.productDescription}
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <span className="text-2xl">
+                              {avatar.personality.icon}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {avatar.personality.name}
+                            </span>
+                          </div>
+                        </div>
+                        {selectedAI?.id === avatar.id && (
+                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
                             <Check className="w-4 h-4 text-white" />
                           </div>
-                          <div className="w-6 h-6 flex items-center justify-center">
-                            <ChevronDown
-                              className={cn(
-                                "w-4 h-4 text-gray-500 transition-transform",
-                                showPersonalityDropdown && "rotate-180"
-                              )}
-                            />
-                          </div>
-                        </div>
+                        )}
                       </div>
-
-                      {/* Dropdown */}
-                      {showPersonalityDropdown && (
-                        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
-                          {personalities.map((personality) => (
-                            <div
-                              key={personality.id}
-                              onClick={() => {
-                                handlePersonalitySelection(personality);
-                                setShowPersonalityDropdown(false);
-                              }}
-                              className={cn(
-                                "p-3 cursor-pointer transition-colors hover:bg-gray-50",
-                                selectedPersonality?.id === personality.id &&
-                                  "bg-purple-50"
-                              )}
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
-                                  <div className="text-xl">
-                                    {personality.icon}
-                                  </div>
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h5 className="font-medium text-gray-900 text-sm">
-                                    {personality.name}
-                                  </h5>
-                                  <p className="text-xs text-gray-600 line-clamp-1">
-                                    {personality.description}
-                                  </p>
-                                </div>
-                                {selectedPersonality?.id === personality.id && (
-                                  <div className="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <Check className="w-2 h-2 text-white" />
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
                     </div>
-                  ) : (
-                    // Show all options when nothing is selected
-                    personalities.map((personality) => (
-                      <div
-                        key={personality.id}
-                        onClick={() => handlePersonalitySelection(personality)}
-                        className="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50 border-gray-200 hover:border-gray-300"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                            <div className="text-3xl">{personality.icon}</div>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-gray-900 mb-1">
-                              {personality.name}
-                            </h4>
-                            <p className="text-sm text-gray-600 line-clamp-2">
-                              {personality.description}
-                            </p>
-                          </div>
-                          <div className="flex flex-col items-end gap-2">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handlePersonalityEdit(personality);
-                              }}
-                              className="text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 px-2 py-1 rounded transition-colors"
-                            >
-                              Edit
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
+                  ))}
                 </div>
               </div>
 
               {/* User Avatars */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <User className="w-5 h-5 text-green-500" />
-                  Your Avatar
-                </h3>
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Your Avatar
+                  </h2>
+                  <div className="relative dropdown-container">
+                    <button
+                      onClick={() => setShowUserDropdown(!showUserDropdown)}
+                      className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      <span>Filter</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                    {showUserDropdown && (
+                      <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                        <div className="p-2">
+                          <div className="text-xs font-semibold text-gray-500 mb-2">
+                            Categories
+                          </div>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">All</span>
+                          </label>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">Professional</span>
+                          </label>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">Casual</span>
+                          </label>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
 
-                <div className="space-y-3">
-                  {userAvatar ? (
-                    <div className="relative">
-                      {/* Selected User Display */}
-                      <div
-                        onClick={() => setShowUserDropdown(!showUserDropdown)}
-                        className="relative p-4 rounded-xl border-2 border-green-500 bg-green-50 shadow-lg cursor-pointer transition-all duration-200 hover:bg-green-100 dropdown-container"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                            {userAvatar.image.startsWith("http") ? (
-                              <img
-                                src={userAvatar.image}
-                                alt={userAvatar.name}
-                                className="w-10 h-10 object-cover rounded-full"
-                              />
-                            ) : userAvatar.image.startsWith("/") ? (
-                              <img
-                                src={userAvatar.image}
-                                alt={userAvatar.name}
-                                className="w-10 h-10 object-contain"
-                              />
-                            ) : (
-                              <div className="text-3xl">{userAvatar.image}</div>
-                            )}
+                <div className="space-y-4">
+                  {userAvatars.map((avatar) => (
+                    <div
+                      key={avatar.id}
+                      onClick={() => handleUserSelection(avatar)}
+                      className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                        userAvatar?.id === avatar.id
+                          ? "border-green-500 bg-green-50"
+                          : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        {avatar.image.startsWith("http") ? (
+                          <img
+                            src={avatar.image}
+                            alt={avatar.name}
+                            className="w-12 h-12 object-cover rounded-full"
+                          />
+                        ) : avatar.image.startsWith("/") ? (
+                          <img
+                            src={avatar.image}
+                            alt={avatar.name}
+                            className="w-12 h-12 object-contain rounded"
+                          />
+                        ) : (
+                          <div className="text-4xl">{avatar.image}</div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 truncate">
+                            {avatar.name}
+                          </h3>
+                          <div className="flex items-center gap-2 mt-2">
+                            <span className="text-2xl">
+                              {avatar.personality.icon}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {avatar.personality.name}
+                            </span>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-gray-900 mb-1">
-                              {userAvatar.name}
-                            </h4>
-                            <p className="text-sm text-gray-600 line-clamp-2">
-                              {userAvatar.personality.description}
-                            </p>
-                          </div>
-                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        </div>
+                        {userAvatar?.id === avatar.id && (
+                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                             <Check className="w-4 h-4 text-white" />
                           </div>
-                          <div className="w-6 h-6 flex items-center justify-center">
-                            <ChevronDown
-                              className={cn(
-                                "w-4 h-4 text-gray-500 transition-transform",
-                                showUserDropdown && "rotate-180"
-                              )}
-                            />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Personalities */}
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Personalities
+                  </h2>
+                  <div className="relative dropdown-container">
+                    <button
+                      onClick={() =>
+                        setShowPersonalityDropdown(!showPersonalityDropdown)
+                      }
+                      className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      <span>Filter</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                    {showPersonalityDropdown && (
+                      <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                        <div className="p-2">
+                          <div className="text-xs font-semibold text-gray-500 mb-2">
+                            Categories
                           </div>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">All</span>
+                          </label>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">Social</span>
+                          </label>
+                          <label className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">Analytical</span>
+                          </label>
                         </div>
                       </div>
+                    )}
+                  </div>
+                </div>
 
-                      {/* Dropdown */}
-                      {showUserDropdown && (
-                        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
-                          {userAvatars.map((avatar) => (
-                            <div
-                              key={avatar.id}
-                              onClick={() => {
-                                handleUserSelection(avatar);
-                                setShowUserDropdown(false);
-                              }}
-                              className={cn(
-                                "p-3 cursor-pointer transition-colors hover:bg-gray-50",
-                                userAvatar?.id === avatar.id && "bg-green-50"
-                              )}
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
-                                  {avatar.image.startsWith("http") ? (
-                                    <img
-                                      src={avatar.image}
-                                      alt={avatar.name}
-                                      className="w-6 h-6 object-cover rounded-full"
-                                    />
-                                  ) : avatar.image.startsWith("/") ? (
-                                    <img
-                                      src={avatar.image}
-                                      alt={avatar.name}
-                                      className="w-6 h-6 object-contain"
-                                    />
-                                  ) : (
-                                    <div className="text-xl">
-                                      {avatar.image}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h5 className="font-medium text-gray-900 text-sm">
-                                    {avatar.name}
-                                  </h5>
-                                  <p className="text-xs text-gray-600 line-clamp-1">
-                                    {avatar.personality.description}
-                                  </p>
-                                </div>
-                                {userAvatar?.id === avatar.id && (
-                                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <Check className="w-2 h-2 text-white" />
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          ))}
+                <div className="space-y-4">
+                  {personalities.map((personality) => (
+                    <div
+                      key={personality.id}
+                      onClick={() => handlePersonalitySelection(personality)}
+                      className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                        selectedPersonality?.id === personality.id
+                          ? "border-purple-500 bg-purple-50"
+                          : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div
+                          className={`w-12 h-12 bg-gradient-to-r ${personality.color} rounded-xl flex items-center justify-center text-2xl`}
+                        >
+                          {personality.icon}
                         </div>
-                      )}
-                    </div>
-                  ) : (
-                    // Show all options when nothing is selected
-                    userAvatars.map((avatar) => (
-                      <div
-                        key={avatar.id}
-                        onClick={() => handleUserSelection(avatar)}
-                        className="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:bg-gray-50 border-gray-200 hover:border-gray-300"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                            {avatar.image.startsWith("http") ? (
-                              <img
-                                src={avatar.image}
-                                alt={avatar.name}
-                                className="w-10 h-10 object-cover rounded-full"
-                              />
-                            ) : avatar.image.startsWith("/") ? (
-                              <img
-                                src={avatar.image}
-                                alt={avatar.name}
-                                className="w-10 h-10 object-contain"
-                              />
-                            ) : (
-                              <div className="text-3xl">{avatar.image}</div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 truncate">
+                            {personality.name}
+                          </h3>
+                          <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                            {personality.description}
+                          </p>
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {personality.traits.slice(0, 2).map((trait) => (
+                              <span
+                                key={trait}
+                                className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded"
+                              >
+                                {trait}
+                              </span>
+                            ))}
+                            {personality.traits.length > 2 && (
+                              <span className="text-xs text-gray-400">
+                                +{personality.traits.length - 2} more
+                              </span>
                             )}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-gray-900 mb-1">
-                              {avatar.name}
-                            </h4>
-                            <p className="text-sm text-gray-600 line-clamp-2">
-                              {avatar.personality.description}
-                            </p>
-                          </div>
                         </div>
+                        {selectedPersonality?.id === personality.id && (
+                          <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                        )}
                       </div>
-                    ))
-                  )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Create Custom Personality */}
+                <div className="mt-6 p-4 border border-dashed border-gray-300 rounded-xl">
+                  <button
+                    onClick={() => setShowPersonalityModal(true)}
+                    className="w-full flex items-center justify-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    <Plus className="w-5 h-5" />
+                    <span>Create Custom Personality</span>
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -1206,7 +1029,7 @@ const AvatarPersonalityInterface: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </Layout>
   );
 };
 

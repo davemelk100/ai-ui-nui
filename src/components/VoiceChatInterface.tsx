@@ -11,6 +11,7 @@ import {
   Headphones,
   Radio,
 } from "lucide-react";
+import Layout from "./Layout";
 
 interface VoiceMessage {
   id: string;
@@ -51,8 +52,6 @@ const VoiceChatInterface: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-
 
   const startRecording = () => {
     setIsRecording(true);
@@ -117,286 +116,159 @@ const VoiceChatInterface: React.FC = () => {
     ));
   };
 
-  return (
-    <div className="flex h-[calc(100vh-64px)] bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-900">
-      {/* Voice Control Sidebar */}
-      <div className="w-80 bg-black/20 backdrop-blur-xl border-r border-white/10 flex flex-col">
-        <div className="p-6 border-b border-white/10">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-2xl flex items-center justify-center shadow-lg">
-              <Radio className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-white">Voice Chat</h1>
-              <p className="text-sm text-blue-200">AI Voice Assistant</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex-1 p-6">
-          {/* Voice Controls */}
-          <div className="space-y-6">
-            {/* Microphone Control */}
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <h3 className="text-white font-semibold mb-4">Voice Input</h3>
-              <button
-                onClick={isRecording ? stopRecording : startRecording}
-                className={`w-full h-16 rounded-xl flex items-center justify-center space-x-3 transition-all duration-300 ${
-                  isRecording
-                    ? "bg-red-500 hover:bg-red-600 animate-pulse"
-                    : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-                } text-white font-medium shadow-lg`}
-              >
-                {isRecording ? (
-                  <>
-                    <MicOff className="w-6 h-6" />
-                    <span>Stop Recording</span>
-                  </>
-                ) : (
-                  <>
-                    <Mic className="w-6 h-6" />
-                    <span>Start Recording</span>
-                  </>
-                )}
-              </button>
-
-              {/* Audio Level Indicator */}
-              {isRecording && (
-                <div className="mt-4 flex items-center justify-center space-x-1">
-                  {generateAudioBars(20, true)}
-                </div>
-              )}
-            </div>
-
-            {/* Volume Control */}
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <h3 className="text-white font-semibold mb-4">Audio Settings</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-purple-200 text-sm">Volume</span>
-                  <button
-                    onClick={() => setIsMuted(!isMuted)}
-                    className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-                  >
-                    {isMuted ? (
-                      <VolumeX className="w-5 h-5 text-red-400" />
-                    ) : (
-                      <Volume2 className="w-5 h-5 text-green-400" />
-                    )}
-                  </button>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={currentVolume}
-                  onChange={(e) => setCurrentVolume(Number(e.target.value))}
-                  disabled={isMuted}
-                  className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
-                />
-                <div className="text-center text-purple-200 text-sm">
-                  {isMuted ? "Muted" : `${currentVolume}%`}
-                </div>
-              </div>
-            </div>
-
-            {/* Voice History */}
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <h3 className="text-white font-semibold mb-4">Voice History</h3>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3 p-3 rounded-xl hover:bg-white/10 cursor-pointer transition-colors">
-                  <Headphones className="w-5 h-5 text-purple-400" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white truncate">
-                      Morning conversation
-                    </p>
-                    <p className="text-xs text-purple-300">2 hours ago</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 rounded-xl hover:bg-white/10 cursor-pointer transition-colors">
-                  <BarChart3 className="w-5 h-5 text-pink-400" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white truncate">
-                      Voice notes
-                    </p>
-                    <p className="text-xs text-purple-300">1 day ago</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6 border-t border-white/10">
-          <button className="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-white/10 text-white transition-colors">
-            <Settings className="w-5 h-5" />
-            <span className="text-sm font-medium">Voice Settings</span>
+  const voiceSidebarContent = (
+    <div className="flex-1 p-6">
+      {/* Voice Controls */}
+      <div className="space-y-6">
+        {/* Microphone Control */}
+        <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+          <h3 className="text-white font-semibold mb-4">Voice Input</h3>
+          <button
+            onClick={isRecording ? stopRecording : startRecording}
+            className={`w-full h-16 rounded-xl flex items-center justify-center space-x-3 transition-all duration-300 ${
+              isRecording
+                ? "bg-red-500 hover:bg-red-600 animate-pulse"
+                : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+            } text-white font-medium shadow-lg`}
+          >
+            {isRecording ? (
+              <>
+                <MicOff className="w-6 h-6" />
+                <span>Stop Recording</span>
+              </>
+            ) : (
+              <>
+                <Mic className="w-6 h-6" />
+                <span>Start Recording</span>
+              </>
+            )}
           </button>
-        </div>
-      </div>
 
-      {/* Main Voice Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Voice Header */}
-        <div className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-white">
-                Voice Conversation
-              </h2>
-              <p className="text-purple-200 mt-1">
-                Real-time voice interaction with AI
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-sm text-purple-200">
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                <span>Voice Active</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                {generateAudioBars(8, !isMuted)}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Voice Messages */}
-        <div className="flex-1 overflow-y-auto p-8 space-y-8">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex space-x-4 animate-slide-up ${
-                message.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              {message.role === "assistant" && (
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                  <Radio className="w-6 h-6 text-white" />
-                </div>
-              )}
-
-              <div className="relative max-w-2xl">
-                <div
-                  className={`px-6 py-4 rounded-2xl relative overflow-hidden ${
-                    message.role === "user"
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
-                      : "bg-white/10 backdrop-blur-sm border border-white/20 text-white"
-                  }`}
-                >
-                  {/* Audio Wave Background */}
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="flex items-center justify-center space-x-1 h-full">
-                      {generateAudioBars(12, message.isPlaying)}
-                    </div>
-                  </div>
-
-                  <div className="relative z-10">
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                      {message.content}
-                    </p>
-
-                    <div className="flex items-center justify-between mt-3">
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => toggleMessagePlayback(message.id)}
-                          className={`p-2 rounded-lg transition-colors ${
-                            message.isPlaying
-                              ? "bg-white/20 text-white"
-                              : "bg-white/10 text-purple-200 hover:bg-white/20"
-                          }`}
-                        >
-                          {message.isPlaying ? (
-                            <Pause className="w-4 h-4" />
-                          ) : (
-                            <Play className="w-4 h-4" />
-                          )}
-                        </button>
-                        <span className="text-xs text-purple-200">
-                          {message.duration}s
-                        </span>
-                      </div>
-
-                      <span className="text-xs text-purple-200">
-                        {message.timestamp.toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Audio Visualization */}
-                <div className="mt-2 flex items-center justify-center space-x-1">
-                  {generateAudioBars(16, message.isPlaying)}
-                </div>
-              </div>
-
-              {message.role === "user" && (
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                  <Mic className="w-6 h-6 text-white" />
-                </div>
-              )}
-            </div>
-          ))}
-
-          {isListening && (
-            <div className="flex space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                <Radio className="w-6 h-6 text-white" />
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-6 py-4">
-                <div className="flex items-center space-x-3">
-                  <div className="flex space-x-1">
-                    {generateAudioBars(8, true)}
-                  </div>
-                  <span className="text-white text-sm">Listening...</span>
-                </div>
-              </div>
+          {/* Audio Level Indicator */}
+          {isRecording && (
+            <div className="mt-4 flex items-center justify-center space-x-1">
+              {generateAudioBars(20, true)}
             </div>
           )}
-
-          <div ref={messagesEndRef} />
         </div>
 
-        {/* Voice Input Area */}
-        <div className="bg-black/20 backdrop-blur-xl border-t border-white/10 p-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center space-x-4">
+        {/* Volume Control */}
+        <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+          <h3 className="text-white font-semibold mb-4">Audio Settings</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-purple-200 text-sm">Volume</span>
               <button
-                onClick={isRecording ? stopRecording : startRecording}
-                className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  isRecording
-                    ? "bg-red-500 hover:bg-red-600 animate-pulse"
-                    : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-                } text-white shadow-lg`}
+                onClick={() => setIsMuted(!isMuted)}
+                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
               >
-                {isRecording ? (
-                  <MicOff className="w-8 h-8" />
+                {isMuted ? (
+                  <VolumeX className="w-5 h-5 text-red-400" />
                 ) : (
-                  <Mic className="w-8 h-8" />
+                  <Volume2 className="w-5 h-5 text-green-400" />
                 )}
               </button>
-
-              <div className="flex-1">
-                <div className="text-center">
-                  <p className="text-purple-200 text-sm">
-                    {isRecording
-                      ? "Recording... Click to stop"
-                      : "Click the microphone to start voice conversation"}
-                  </p>
-                  {isRecording && (
-                    <div className="mt-2 flex items-center justify-center space-x-1">
-                      {generateAudioBars(20, true)}
-                    </div>
-                  )}
-                </div>
-              </div>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={currentVolume}
+              onChange={(e) => setCurrentVolume(Number(e.target.value))}
+              disabled={isMuted}
+              className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+            />
+            <div className="text-center text-purple-200 text-sm">
+              {isMuted ? "Muted" : `${currentVolume}%`}
             </div>
           </div>
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <Layout
+      title="Voice Chat"
+      description="AI Voice Assistant"
+      icon={<Radio className="w-6 h-6 text-white" />}
+      sidebarContent={voiceSidebarContent}
+      theme="dark"
+    >
+      {/* Voice Messages */}
+      <div className="flex-1 overflow-y-auto p-8 space-y-6">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`flex space-x-4 ${
+              message.role === "user" ? "flex-row-reverse space-x-reverse" : ""
+            }`}
+          >
+            <div
+              className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+                message.role === "user"
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500"
+                  : "bg-gradient-to-r from-blue-500 to-cyan-500"
+              } shadow-lg`}
+            >
+              {message.role === "user" ? (
+                <Mic className="w-6 h-6 text-white" />
+              ) : (
+                <Headphones className="w-6 h-6 text-white" />
+              )}
+            </div>
+
+            <div
+              className={`flex-1 max-w-2xl ${
+                message.role === "user" ? "text-right" : ""
+              }`}
+            >
+              <div
+                className={`inline-block p-6 rounded-2xl shadow-lg ${
+                  message.role === "user"
+                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                    : "bg-white/10 backdrop-blur-sm text-white border border-white/20"
+                }`}
+              >
+                <p className="text-lg leading-relaxed">{message.content}</p>
+
+                {/* Audio Visualization */}
+                <div className="mt-4 flex items-center space-x-3">
+                  <button
+                    onClick={() => toggleMessagePlayback(message.id)}
+                    className={`p-2 rounded-lg transition-colors ${
+                      message.role === "user"
+                        ? "bg-white/20 hover:bg-white/30"
+                        : "bg-white/10 hover:bg-white/20"
+                    }`}
+                  >
+                    {message.isPlaying ? (
+                      <Pause className="w-4 h-4" />
+                    ) : (
+                      <Play className="w-4 h-4" />
+                    )}
+                  </button>
+
+                  <div className="flex items-center space-x-1">
+                    {generateAudioBars(15, message.isPlaying)}
+                  </div>
+
+                  <span className="text-sm opacity-75">
+                    {message.duration}s
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-2 text-sm text-gray-400">
+                {message.timestamp.toLocaleTimeString()}
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <div ref={messagesEndRef} />
+      </div>
+    </Layout>
   );
 };
 

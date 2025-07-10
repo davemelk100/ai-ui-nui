@@ -15,8 +15,10 @@ import {
   Search,
   TrendingUp,
   Lightbulb,
+  MousePointer,
 } from "lucide-react";
 import { cn } from "../lib/utils";
+import Layout from "./Layout";
 
 interface DraggableComponent {
   id: string;
@@ -547,135 +549,64 @@ const DragDropInterface: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Component Drag & Drop
-          </h1>
-          <p className="text-gray-600">
-            Drag real UI components between different zones to organize your
-            interface
-          </p>
-        </div>
-
-        {/* Controls */}
-        <div className="mb-6 flex gap-4">
-          <button
-            onClick={addSampleComponents}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-          >
-            <Upload className="w-4 h-4" />
-            Add Sample Components
-          </button>
-          <button
-            onClick={() => clearZone("components")}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
-          >
-            <Trash2 className="w-4 h-4" />
-            Clear Component Library
-          </button>
-        </div>
-
-        {/* Drop Zones Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {dropZones.map((zone) => (
-            <div
-              key={zone.id}
-              className={`bg-white rounded-xl shadow-lg border-2 border-dashed transition-all duration-200 ${
-                dragOverZone === zone.id
-                  ? "border-blue-400 bg-blue-50 scale-105"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-              onDragOver={(e) => handleDragOver(e, zone.id)}
-              onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, zone.id)}
-            >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {zone.title}
-                    </h3>
-                    <p className="text-sm text-gray-500">{zone.description}</p>
-                  </div>
-                  {zone.maxItems && (
-                    <span className="text-xs text-gray-400">
-                      {zone.items.length}/{zone.maxItems}
-                    </span>
-                  )}
-                </div>
-
-                <div className="space-y-3 min-h-[300px]">
-                  {zone.items.map((item) => (
-                    <div
-                      key={item.id}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, item)}
-                      className={`transition-all duration-200 ${
-                        draggedItem?.id === item.id ? "opacity-50 scale-95" : ""
-                      }`}
-                    >
-                      {renderComponent(item)}
-                    </div>
-                  ))}
-
-                  {zone.items.length === 0 && (
-                    <div className="flex items-center justify-center h-32 text-gray-400">
-                      <div className="text-center">
-                        <Upload className="w-8 h-8 mx-auto mb-2" />
-                        <p className="text-sm">Drop components here</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Layout Builder Area */}
-        <div className="mt-8 bg-white rounded-xl shadow-lg p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900">
-                Layout Builder
-              </h3>
-              <p className="text-gray-600">
-                Arrange components to create complete interface layouts
-              </p>
-            </div>
+    <Layout
+      title="Component Drag & Drop"
+      description="Drag real UI components between different zones to organize your interface"
+      icon={<MousePointer className="w-6 h-6 text-white" />}
+    >
+      <div className="flex-1 overflow-y-auto p-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Controls */}
+          <div className="mb-6 flex gap-4">
             <button
-              onClick={() => clearZone("layout")}
-              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2"
+              onClick={addSampleComponents}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+            >
+              <Upload className="w-4 h-4" />
+              Add Sample Components
+            </button>
+            <button
+              onClick={() => clearZone("components")}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
             >
               <Trash2 className="w-4 h-4" />
-              Clear Layout
+              Clear Component Library
             </button>
           </div>
 
-          {/* 1x3 Layout Grid */}
-          <div className="grid grid-cols-3 gap-4 min-h-[400px]">
-            {/* Left Column */}
-            <div
-              className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
-                dragOverZone === "layout-left"
-                  ? "border-blue-400 bg-blue-50 scale-105"
-                  : "border-gray-300 hover:border-gray-400"
-              }`}
-              onDragOver={(e) => handleDragOver(e, "layout-left")}
-              onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, "layout-left")}
-            >
-              <div className="p-4 h-full">
-                <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
-                  Left Panel
-                </h4>
-                <div className="space-y-2 min-h-[300px]">
-                  {dropZones
-                    .find((z) => z.id === "layout-left")
-                    ?.items.map((item) => (
+          {/* Drop Zones Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {dropZones.map((zone) => (
+              <div
+                key={zone.id}
+                className={`bg-white rounded-xl shadow-lg border-2 border-dashed transition-all duration-200 ${
+                  dragOverZone === zone.id
+                    ? "border-blue-400 bg-blue-50 scale-105"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+                onDragOver={(e) => handleDragOver(e, zone.id)}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, zone.id)}
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {zone.title}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {zone.description}
+                      </p>
+                    </div>
+                    {zone.maxItems && (
+                      <span className="text-xs text-gray-400">
+                        {zone.items.length}/{zone.maxItems}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="space-y-3 min-h-[300px]">
+                    {zone.items.map((item) => (
                       <div
                         key={item.id}
                         draggable
@@ -689,158 +620,185 @@ const DragDropInterface: React.FC = () => {
                         {renderComponent(item)}
                       </div>
                     ))}
-                  {(!dropZones.find((z) => z.id === "layout-left")?.items ||
-                    dropZones.find((z) => z.id === "layout-left")?.items
-                      .length === 0) && (
-                    <div className="flex items-center justify-center h-32 text-gray-400">
-                      <div className="text-center">
-                        <Upload className="w-6 h-6 mx-auto mb-1" />
-                        <p className="text-xs">Drop here</p>
+
+                    {zone.items.length === 0 && (
+                      <div className="flex items-center justify-center h-32 text-gray-400">
+                        <div className="text-center">
+                          <Upload className="w-8 h-8 mx-auto mb-2" />
+                          <p className="text-sm">Drop components here</p>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
+
+          {/* Layout Builder Area */}
+          <div className="mt-8 bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  Layout Builder
+                </h3>
+                <p className="text-gray-600">
+                  Arrange components to create complete interface layouts
+                </p>
+              </div>
+              <button
+                onClick={() => clearZone("layout")}
+                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                Clear Layout
+              </button>
             </div>
 
-            {/* Center Column */}
-            <div
-              className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
-                dragOverZone === "layout-center"
-                  ? "border-blue-400 bg-blue-50 scale-105"
-                  : "border-gray-300 hover:border-gray-400"
-              }`}
-              onDragOver={(e) => handleDragOver(e, "layout-center")}
-              onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, "layout-center")}
-            >
-              <div className="p-4 h-full">
-                <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
-                  Main Content
-                </h4>
-                <div className="space-y-2 min-h-[300px]">
-                  {dropZones
-                    .find((z) => z.id === "layout-center")
-                    ?.items.map((item) => (
-                      <div
-                        key={item.id}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, item)}
-                        className={`transition-all duration-200 ${
-                          draggedItem?.id === item.id
-                            ? "opacity-50 scale-95"
-                            : ""
-                        }`}
-                      >
-                        {renderComponent(item)}
+            {/* 1x3 Layout Grid */}
+            <div className="grid grid-cols-3 gap-4 min-h-[400px]">
+              {/* Left Column */}
+              <div
+                className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
+                  dragOverZone === "layout-left"
+                    ? "border-blue-400 bg-blue-50 scale-105"
+                    : "border-gray-300 hover:border-gray-400"
+                }`}
+                onDragOver={(e) => handleDragOver(e, "layout-left")}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, "layout-left")}
+              >
+                <div className="p-4 h-full">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
+                    Left Panel
+                  </h4>
+                  <div className="space-y-2 min-h-[300px]">
+                    {dropZones
+                      .find((z) => z.id === "layout-left")
+                      ?.items.map((item) => (
+                        <div
+                          key={item.id}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, item)}
+                          className={`transition-all duration-200 ${
+                            draggedItem?.id === item.id
+                              ? "opacity-50 scale-95"
+                              : ""
+                          }`}
+                        >
+                          {renderComponent(item)}
+                        </div>
+                      ))}
+                    {(!dropZones.find((z) => z.id === "layout-left")?.items ||
+                      dropZones.find((z) => z.id === "layout-left")?.items
+                        .length === 0) && (
+                      <div className="flex items-center justify-center h-32 text-gray-400">
+                        <div className="text-center">
+                          <Upload className="w-6 h-6 mx-auto mb-1" />
+                          <p className="text-xs">Drop here</p>
+                        </div>
                       </div>
-                    ))}
-                  {(!dropZones.find((z) => z.id === "layout-center")?.items ||
-                    dropZones.find((z) => z.id === "layout-center")?.items
-                      .length === 0) && (
-                    <div className="flex items-center justify-center h-32 text-gray-400">
-                      <div className="text-center">
-                        <Upload className="w-6 h-6 mx-auto mb-1" />
-                        <p className="text-xs">Drop here</p>
-                      </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Right Column */}
-            <div
-              className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
-                dragOverZone === "layout-right"
-                  ? "border-blue-400 bg-blue-50 scale-105"
-                  : "border-gray-300 hover:border-gray-400"
-              }`}
-              onDragOver={(e) => handleDragOver(e, "layout-right")}
-              onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, "layout-right")}
-            >
-              <div className="p-4 h-full">
-                <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
-                  Right Panel
-                </h4>
-                <div className="space-y-2 min-h-[300px]">
-                  {dropZones
-                    .find((z) => z.id === "layout-right")
-                    ?.items.map((item) => (
-                      <div
-                        key={item.id}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, item)}
-                        className={`transition-all duration-200 ${
-                          draggedItem?.id === item.id
-                            ? "opacity-50 scale-95"
-                            : ""
-                        }`}
-                      >
-                        {renderComponent(item)}
+              {/* Center Column */}
+              <div
+                className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
+                  dragOverZone === "layout-center"
+                    ? "border-blue-400 bg-blue-50 scale-105"
+                    : "border-gray-300 hover:border-gray-400"
+                }`}
+                onDragOver={(e) => handleDragOver(e, "layout-center")}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, "layout-center")}
+              >
+                <div className="p-4 h-full">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
+                    Main Content
+                  </h4>
+                  <div className="space-y-2 min-h-[300px]">
+                    {dropZones
+                      .find((z) => z.id === "layout-center")
+                      ?.items.map((item) => (
+                        <div
+                          key={item.id}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, item)}
+                          className={`transition-all duration-200 ${
+                            draggedItem?.id === item.id
+                              ? "opacity-50 scale-95"
+                              : ""
+                          }`}
+                        >
+                          {renderComponent(item)}
+                        </div>
+                      ))}
+                    {(!dropZones.find((z) => z.id === "layout-center")?.items ||
+                      dropZones.find((z) => z.id === "layout-center")?.items
+                        .length === 0) && (
+                      <div className="flex items-center justify-center h-32 text-gray-400">
+                        <div className="text-center">
+                          <Upload className="w-6 h-6 mx-auto mb-1" />
+                          <p className="text-xs">Drop here</p>
+                        </div>
                       </div>
-                    ))}
-                  {(!dropZones.find((z) => z.id === "layout-right")?.items ||
-                    dropZones.find((z) => z.id === "layout-right")?.items
-                      .length === 0) && (
-                    <div className="flex items-center justify-center h-32 text-gray-400">
-                      <div className="text-center">
-                        <Upload className="w-6 h-6 mx-auto mb-1" />
-                        <p className="text-xs">Drop here</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div
+                className={`bg-gray-50 rounded-xl border-2 border-dashed transition-all duration-200 ${
+                  dragOverZone === "layout-right"
+                    ? "border-blue-400 bg-blue-50 scale-105"
+                    : "border-gray-300 hover:border-gray-400"
+                }`}
+                onDragOver={(e) => handleDragOver(e, "layout-right")}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, "layout-right")}
+              >
+                <div className="p-4 h-full">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3 text-center">
+                    Right Panel
+                  </h4>
+                  <div className="space-y-2 min-h-[300px]">
+                    {dropZones
+                      .find((z) => z.id === "layout-right")
+                      ?.items.map((item) => (
+                        <div
+                          key={item.id}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, item)}
+                          className={`transition-all duration-200 ${
+                            draggedItem?.id === item.id
+                              ? "opacity-50 scale-95"
+                              : ""
+                          }`}
+                        >
+                          {renderComponent(item)}
+                        </div>
+                      ))}
+                    {(!dropZones.find((z) => z.id === "layout-right")?.items ||
+                      dropZones.find((z) => z.id === "layout-right")?.items
+                        .length === 0) && (
+                      <div className="flex items-center justify-center h-32 text-gray-400">
+                        <div className="text-center">
+                          <Upload className="w-6 h-6 mx-auto mb-1" />
+                          <p className="text-xs">Drop here</p>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Layout Preview */}
-          <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
-            <h4 className="text-sm font-semibold text-gray-900 mb-2">
-              Layout Preview
-            </h4>
-            <p className="text-xs text-gray-600">
-              This 1x3 layout represents a typical interface structure: Left
-              Panel (navigation/sidebar), Main Content (primary interface), and
-              Right Panel (tools/details).
-            </p>
-          </div>
-        </div>
-
-        {/* Instructions */}
-        <div className="mt-8 bg-white rounded-xl p-6 shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">
-            How to use:
-          </h3>
-          <ul className="space-y-2 text-gray-600">
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-              Click "Add Sample Components" to populate the component library
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-              Drag real UI components (messages, team members, content items)
-              between zones
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-              Components change status automatically based on their zone
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-              Archive zone has a limit of 15 components
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-              Use the Layout Builder to arrange components in a 1x3 grid for
-              complete interface layouts
-            </li>
-          </ul>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

@@ -1,6 +1,6 @@
 {
-  "short_name": "NUI",
-  "name": "NUI - Natural User Interface",
+  "short_name": "AI Tuning",
+  "name": "AI Tuning - Collaborative AI Development",
   "icons": [
     {
       "src": "favicon.svg",
@@ -30,6 +30,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#3B82F6",
   "background_color": "#ffffff"
 }

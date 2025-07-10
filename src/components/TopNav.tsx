@@ -38,6 +38,12 @@ const TopNav: React.FC = () => {
       description:
         "Select AI companions and customize your own avatar with unique personalities and traits. Start personalized conversations where both user and AI have distinct personalities that influence the interaction style and responses.",
     },
+    {
+      path: "/figma",
+      label: "Figma Shortcuts",
+      description:
+        "Essential Figma shortcuts every designer should know to work faster and more efficiently. Organized by category with macOS and Windows shortcuts displayed side by side.",
+    },
   ];
 
   const isActive = (path: string) => location.pathname === path;
